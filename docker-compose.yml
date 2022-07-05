@@ -16,7 +16,7 @@ services:
     image: nginx:1.15
     container_name: nginx
     ports:
-      - 8000:80
+      - 80:80
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./logs/nginx:/var/log/nginx
