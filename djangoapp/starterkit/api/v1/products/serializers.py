@@ -1,4 +1,5 @@
 from django.db.models import Q
+from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from .models import *
 from drf_writable_nested.serializers import WritableNestedModelSerializer
@@ -165,8 +166,8 @@ class ProductsViewSerializer(ModelSerializer):
 class CategoriesViewSeriazlizer(ModelSerializer):
     # parent = ParentCategorySerializer()
 
-    # sex = SexSeriazlizer()
+    sex_slug = serializers.SlugField(read_only=True, source="sex.slug")
 
     class Meta:
         model = Category
-        fields = ('title', 'slug', 'pk', 'sex__slug')
+        fields = ('title', 'slug', 'pk', 'sex_slug')
