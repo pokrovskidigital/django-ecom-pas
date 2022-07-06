@@ -169,4 +169,4 @@ class CategoriesViewSeriazlizer(ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('title', 'slug', 'pk', 'parent')
+        fields = ('title', 'slug', 'pk', 'sex__slug')
