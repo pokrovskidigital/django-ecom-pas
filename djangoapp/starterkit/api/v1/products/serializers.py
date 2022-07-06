@@ -131,7 +131,8 @@ class ProductCreateSeriazlizer(WritableNestedModelSerializer):
 class BrandSeriazlizer(ModelSerializer):
     class Meta:
         model = Brand
-        fields = "__all__"
+        fields = ("title",
+        )
 
 
 class VariantsSerializer(ModelSerializer):
@@ -144,10 +145,10 @@ class VariantsSerializer(ModelSerializer):
 
 
 class ProductViewSerializer(ModelSerializer):
-    category = CategorySeriazlizer()
+    # category = CategorySeriazlizer()
     brand = BrandSeriazlizer()
-    variants = VariantsSerializer(many=True)
-    sex = SexSeriazlizer()
+    # variants = VariantsSerializer(many=True)
+    # sex = SexSeriazlizer()
     class Meta:
         model = Product
-        fields = '__all__'
+        fields = ('id', 'slug','image', 'title', 'price', 'brand',)
