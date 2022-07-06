@@ -74,7 +74,8 @@ class ColorCreateSeriazlizer(ModelSerializer):
                 color.synonyms += f"{validated_data['code_1c']}, "
                 color.save()
         except:
-            color = Color.objects.create(title=validated_data['title'], code_1c=validated_data['code_1c'], slug=validated_data['slug'])
+            color = Color.objects.create(title=validated_data['title'], code_1c=validated_data['code_1c'],
+                                         slug=validated_data['slug'])
         return color
 
 
@@ -137,7 +138,7 @@ class BrandSeriazlizer(ModelSerializer):
     class Meta:
         model = Brand
         fields = ("title",
-        )
+                  )
 
 
 class VariantsSerializer(ModelSerializer):
@@ -149,12 +150,22 @@ class VariantsSerializer(ModelSerializer):
         exclude = ('variants',)
 
 
-class ProductViewSerializer(ModelSerializer):
+class ProductsViewSerializer(ModelSerializer):
     # category = CategorySeriazlizer()
     brand = BrandSeriazlizer()
+
     # variants = VariantsSerializer(many=True)
     # sex = SexSeriazlizer()
 
     class Meta:
         model = Product
-        fields = ('id', 'slug','image', 'title', 'price', 'brand',)
+        fields = ('id', 'slug', 'image', 'title', 'price', 'brand',)
+
+
+class CategoriesViewSeriazlizer(ModelSerializer):
+    parent = ParentCategorySerializer()
+    sex = SexSeriazlizer()
+
+    class Meta:
+        model = Category
+        fields = ('title', 'slug', 'pk',)

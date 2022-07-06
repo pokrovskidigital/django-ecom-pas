@@ -3,8 +3,8 @@ from rest_framework.generics import ListAPIView
 # Create your views here.
 from rest_framework.pagination import PageNumberPagination
 
-from .models import Product
-from .serializers import ProductViewSerializer
+from .models import Product, Category
+from .serializers import ProductsViewSerializer,CategoriesViewSeriazlizer
 from rest_framework.permissions import AllowAny
 
 
@@ -14,9 +14,17 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
+class CategoryListApiView(ListAPIView):
+    pagination_class = StandardResultsSetPagination
+    queryset = Category.objects.all()
+    serializer_class = CategoriesViewSeriazlizer
+    permission_classes = (AllowAny,)
+    lookup_field = 'sex__slug'
+
+
 class ProductListApiView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     queryset = Product.objects.filter(leftovers__count__gt=0)
-    serializer_class = ProductViewSerializer
+    serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
     lookup_field = 'sex__slug'

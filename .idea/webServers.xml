@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5d2b434e-a80e-4fb7-9d0c-b4c791f2b945" name="netangels" url="http://back.ppassage.ru">
+        <fileTransfer rootFolder="/var/www" accessType="SFTP" host="213.189.220.38" port="22" sshConfigId="d56c73ed-d99b-4b47-ad1e-5ab8c8d4c6be" sshConfig="root@213.189.220.38:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

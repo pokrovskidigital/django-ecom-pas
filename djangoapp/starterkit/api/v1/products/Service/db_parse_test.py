@@ -318,11 +318,11 @@ class DBParser():
 
 def parse():
     parser = DBParser()
-    clear_all()
-    parser.parse_categories()
-    parser.parse_subcategory()
-    parser.parse_brands()
-    parser.parse_products()
+    # clear_all()
+    # parser.parse_categories()
+    # parser.parse_subcategory()
+    # parser.parse_brands()
+    # parser.parse_products()
     parser.parse_description_fashion_season_and_tags()
     parser.compare_produts_variants()
     parser.parse_photos()
