@@ -8,17 +8,18 @@ from ..serializers import CategoryCreateSeriazlizer, SexCreateSeriazlizer, Brand
     ProductCreateSeriazlizer, TagCreateSeriazlizer
 from .parser_test import parse_offers
 from progress.bar import *
-
+from django.conf import settings
 
 def clear_all():
-    Product.objects.all().delete()
-    Category.objects.all().delete()
-    Sex.objects.all().delete()
-    Color.objects.all().delete()
-    Tag.objects.all().delete()
-    Brand.objects.all().delete()
-    Leftover.objects.all().delete()
-    Size.objects.all().delete()
+    Image.objects.all().delete()
+    # Product.objects.all().delete()
+    # Category.objects.all().delete()
+    # Sex.objects.all().delete()
+    # Color.objects.all().delete()
+    # Tag.objects.all().delete()
+    # Brand.objects.all().delete()
+    # Leftover.objects.all().delete()
+    # Size.objects.all().delete()
 
 
 class DBParser():
@@ -188,6 +189,7 @@ class DBParser():
 
         for offer in offers:
             prod = Product.objects.filter(sku=offer['sku'])[0]
+            print(offer['color'])
             if prod is not None:
                 if not prod.color:
                     if offer['color'] is not None:
@@ -265,7 +267,7 @@ class DBParser():
                 product.save()
 
     def parse_photos(self):
-        print('Start compare product variants...')
+        print('Start parse photos...')
 
         self.cursor.execute('SELECT * FROM [iShop].[Pictures] ORDER BY [ArticleIDD];')
         rows = self.cursor.fetchall()
@@ -276,24 +278,42 @@ class DBParser():
             if prods:
                 code = row['FileName'].split('_')[-2]
                 if not code == 'NA':
-                    if prods.filter(color__code_1c=code):
+                    if prods.filter(color__code_1c=code) or prods.filter(color__synonyms__icontains=code):
                         img = None
                         if 'LARGE' in row['FileName']:
                             img = Image.objects.update_or_create(
-                                image_l='/var/www/media/img/products/LARGE/' + row['FileName'].split('\\')[-1],
+                                image_l=f'{settings.MEDIA_ROOT}/img/products/LARGE/' + row['FileName'].split('\\')[-1],
                                 title=row['ArticleIDD'])
                         elif 'MEDIUM' in row['FileName']:
                             img = Image.objects.update_or_create(
-                                image_m='/var/www/media/img/products/MEDIUM/' + row['FileName'].split('\\')[-1],
+                                image_m=f'{settings.MEDIA_ROOT}/img/products/MEDIUM/' + row['FileName'].split('\\')[-1],
                                 title=row['ArticleIDD'])
                         elif 'SMALL' in row['FileName']:
                             img = Image.objects.update_or_create(
-                                image_l='/var/www/media/img/products/SMALL/' + row['FileName'].split('\\')[-1],
+                                image_l=f'{settings.MEDIA_ROOT}/img/products/SMALL/' + row['FileName'].split('\\')[-1],
                                 title=row['ArticleIDD'])
                         prods[0].image.add(img[0].pk)
-
+                else:
+                    img = None
+                    if 'LARGE' in row['FileName']:
+                        img = Image.objects.update_or_create(
+                            image_l=f'{settings.MEDIA_ROOT}/img/products/LARGE/' + row['FileName'].split('\\')[-1],
+                            title=row['ArticleIDD'])
+                    elif 'MEDIUM' in row['FileName']:
+                        img = Image.objects.update_or_create(
+                            image_m=f'{settings.MEDIA_ROOT}/img/products/MEDIUM/' + row['FileName'].split('\\')[-1],
+                            title=row['ArticleIDD'])
+                    elif 'SMALL' in row['FileName']:
+                        img = Image.objects.update_or_create(
+                            image_l=f'{settings.MEDIA_ROOT}/img/products/SMALL/' + row['FileName'].split('\\')[-1],
+                            title=row['ArticleIDD'])
+                    for prod in prods:
+                        prod.image.add(img[0].pk)
             bar.next()
         bar.finish()
+
+    def close(self):
+        self.conn.close()
 
 
 def parse():
@@ -303,5 +323,7 @@ def parse():
     parser.parse_subcategory()
     parser.parse_brands()
     parser.parse_products()
+    parser.parse_description_fashion_season_and_tags()
     parser.compare_produts_variants()
-    # parser.parse_photos()
+    parser.parse_photos()
+    parser.close()

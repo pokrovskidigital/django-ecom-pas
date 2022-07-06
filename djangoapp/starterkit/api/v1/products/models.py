@@ -74,6 +74,7 @@ class Color(models.Model):
     slug = models.SlugField(max_length=250, unique=False, db_index=True, verbose_name="slug", default="-")
     title = models.CharField(max_length=200, verbose_name="title")
     code_1c = models.CharField(max_length=200, verbose_name="code_1c")
+    synonyms = models.CharField(max_length=900, verbose_name="synonyms", blank=True, null=True, default=' ')
 
     def __str__(self):
         return self.title

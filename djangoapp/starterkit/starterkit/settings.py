@@ -79,9 +79,9 @@ WSGI_APPLICATION = 'starterkit.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'database1',
-        'USER': 'database1_role',
-        'PASSWORD': 'database1_password',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
         'HOST': 'database1',  # <-- IMPORTANT: same name as docker-compose service!
         'PORT': '5432',
     }
