@@ -4,6 +4,7 @@ services:
   djangoapp:
     build: .
     container_name: djangoapp
+    restart: always
     volumes:
       - ./djangoapp:/var/djangoapp # <-- bind the application code
       - ./static_volume:/var/static  # <-- bind the static files
@@ -17,23 +18,32 @@ services:
     container_name: nginx
     ports:
       - 80:80
+      - 443:443
+    restart: always
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - ./certbot/www:/var/www/certbot/:ro
+      - ./certbot/conf/:/etc/nginx/ssl/:ro
       - ./logs/nginx:/var/log/nginx
       - ./static_volume:/var/static  # <-- bind the static files again so Nginx can share volume
       - ./media_volume:/var/media  # <-- bind the media files again so Nginx can share volume
-    depends_on:  # <-- wait for djangoapp to be "ready" before starting this service
+    depends_on: # <-- wait for djangoapp to be "ready" before starting this service
       - djangoapp
     networks:
-      - nginx_network  
+      - nginx_network
+  certbot:
+    image: certbot/certbot:latest
+    volumes:
+      - ./certbot/www/:/var/www/certbot/:rw
+      - ./certbot/conf/:/etc/letsencrypt/:rw
 
-  database1:  # <-- IMPORTANT: same name as in Djano settings.py, otherwise Django won't find the database!
+  database1: # <-- IMPORTANT: same name as in Djano settings.py, otherwise Django won't find the database!
     image: postgres:11
     container_name: database1
-    env_file:  # <-- match values to Djano settings.py
+    env_file: # <-- match values to Djano settings.py
       - config/db/database1_env
     networks:
-      - database1_network  
+      - database1_network
     volumes:
       - ./postgres/data:/var/lib/postgresql/data # <-- bind the database to local directory
 
