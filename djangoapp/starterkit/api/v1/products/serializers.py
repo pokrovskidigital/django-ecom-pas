@@ -163,7 +163,7 @@ class ProductsViewSerializer(ModelSerializer):
 
 
 class CategoriesViewSeriazlizer(ModelSerializer):
-    parent = ParentCategorySerializer()
+    # parent = ParentCategorySerializer()
 
     # sex = SexSeriazlizer()
 
