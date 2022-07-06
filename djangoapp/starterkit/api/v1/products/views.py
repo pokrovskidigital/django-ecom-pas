@@ -15,7 +15,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class CategoryListApiView(ListAPIView):
-    pagination_class = StandardResultsSetPagination
+    # pagination_class = StandardResultsSetPagination
     queryset = Category.objects.all()
     serializer_class = CategoriesViewSeriazlizer
     permission_classes = (AllowAny,)
