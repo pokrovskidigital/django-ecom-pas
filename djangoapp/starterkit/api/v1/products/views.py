@@ -19,7 +19,6 @@ class CategoryListApiView(ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategoriesViewSeriazlizer
     permission_classes = (AllowAny,)
-    lookup_field = 'sex_slug'
 
 
 class ProductListApiView(ListAPIView):
