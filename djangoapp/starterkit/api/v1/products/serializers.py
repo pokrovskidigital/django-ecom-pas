@@ -164,8 +164,9 @@ class ProductsViewSerializer(ModelSerializer):
 
 class CategoriesViewSeriazlizer(ModelSerializer):
     parent = ParentCategorySerializer()
-    sex = SexSeriazlizer()
+
+    # sex = SexSeriazlizer()
 
     class Meta:
         model = Category
-        fields = ('title', 'slug', 'pk',)
+        fields = ('title', 'slug', 'pk', 'parent')
