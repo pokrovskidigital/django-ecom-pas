@@ -16,7 +16,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class ProductListApiView(ListAPIView):
     pagination_class = StandardResultsSetPagination
-    queryset = Product.objects.all()
+    queryset = Product.objects.filter(leftovers__count__gt=0)
     serializer_class = ProductViewSerializer
     permission_classes = (AllowAny,)
     lookup_field = 'sex__slug'

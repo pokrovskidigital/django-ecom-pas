@@ -68,7 +68,13 @@ class ColorCreateSeriazlizer(ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        color = Color.objects.update_or_create(slug=validated_data.get('slug', None), defaults=validated_data)
+        try:
+            color = Color.objects.get(slug=validated_data.get('slug', None))
+            if validated_data['code_1c'] not in color.synonyms:
+                color.synonyms += f"{validated_data['code_1c']}, "
+                color.save()
+        except:
+            color = Color.objects.create(title=validated_data['title'], code_1c=validated_data['code_1c'], slug=validated_data['slug'])
         return color
 
 
@@ -78,7 +84,6 @@ class TagCreateSeriazlizer(ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        print(validated_data)
         tag = Tag.objects.update_or_create(slug=validated_data.get('slug', None), defaults=validated_data)
         return tag[0]
 
@@ -149,6 +154,7 @@ class ProductViewSerializer(ModelSerializer):
     brand = BrandSeriazlizer()
     # variants = VariantsSerializer(many=True)
     # sex = SexSeriazlizer()
+
     class Meta:
         model = Product
         fields = ('id', 'slug','image', 'title', 'price', 'brand',)

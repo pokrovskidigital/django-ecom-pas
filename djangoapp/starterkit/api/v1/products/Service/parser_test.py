@@ -263,7 +263,7 @@ def create_leftover(offer):
 def parse_offers(sku_list):
     global data_offers
     data = []
-    with open("/code/api/v1/products/Service/offers0_1.xml", 'r', encoding="utf-8") as f:
+    with open("starterkit/api/v1/products/Service/offers0_1.xml", 'r', encoding="utf-8") as f:
         a = f.read()
         parsed_xml = xmltodict.parse(a, encoding="utf-8")
         count = 0
@@ -289,7 +289,7 @@ def parse_offers(sku_list):
                         }
                     ser = ColorCreateSeriazlizer(data=color)
                     ser.is_valid(raise_exception=True)
-                    color = ser.create(ser.validated_data)[0].pk
+                    color = ser.create(ser.validated_data).pk
                 except:
                     color = None
                 leftover.price = float(offer['Цены']['Цена']["ЦенаЗаЕдиницу"])
