@@ -26,7 +26,7 @@ SECRET_KEY = '_2*^^tq)sbdmvx%bi46&*rhj5gas#^a8td%vo=x5qw1+=!x1$y'
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://back.ppassage.ru']
 # Application definition
 
 INSTALLED_APPS = [
