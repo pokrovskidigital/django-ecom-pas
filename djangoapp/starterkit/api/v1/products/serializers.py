@@ -157,17 +157,26 @@ class ImageViewSerializer(ModelSerializer):
         fields = ('image_l', 'image_s', 'image_m')
 
 
+class LeftoverViewSerializer(ModelSerializer):
+    size_title = serializers.CharField(read_only=True, source='parent_size.title')
+
+    class Meta:
+        model = Image
+        fields = ('size_title', 'count',)
+
+
 class ProductsViewSerializer(ModelSerializer):
     # category = CategorySeriazlizer()
     brand = BrandSeriazlizer()
     image = ImageViewSerializer(many=True)
-    size_title = serializers.CharField(read_only=True, source='leftovers.parent_size.title')
-    # variants = VariantsSerializer(many=True)
+    # size_title = serializers.CharField(read_only=True, source='leftovers.parent_size.title')
+    leftovers = LeftoverViewSerializer(many=True)
+
     # sex = SexSeriazlizer()
 
     class Meta:
         model = Product
-        fields = ('id', 'slug', 'title', 'price', 'brand', 'image','size_title' )
+        fields = ('id', 'slug', 'title', 'price', 'brand', 'image', 'leftovers')
 
 
 class CategoriesViewSeriazlizer(ModelSerializer):
