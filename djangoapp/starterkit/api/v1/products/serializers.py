@@ -151,16 +151,23 @@ class VariantsSerializer(ModelSerializer):
         exclude = ('variants',)
 
 
+class ImageViewSerializer(ModelSerializer):
+    class Meta:
+        model = Image
+        fields = ('image_l', 'image_s', 'image_m')
+
+
 class ProductsViewSerializer(ModelSerializer):
     # category = CategorySeriazlizer()
     brand = BrandSeriazlizer()
+    image = ImageViewSerializer(many=True)
 
     # variants = VariantsSerializer(many=True)
     # sex = SexSeriazlizer()
 
     class Meta:
         model = Product
-        fields = ('id', 'slug', 'image', 'title', 'price', 'brand',)
+        fields = ('id', 'slug', 'title', 'price', 'brand', 'image')
 
 
 class CategoriesViewSeriazlizer(ModelSerializer):

@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, GenericAPIView
 # Create your views here.
 from rest_framework.pagination import PageNumberPagination
 
 from .models import Product, Category
-from .serializers import ProductsViewSerializer,CategoriesViewSeriazlizer
+from .serializers import ProductsViewSerializer, CategoriesViewSeriazlizer
 from rest_framework.permissions import AllowAny
 
 
@@ -15,11 +15,12 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 
 class CategoryListApiView(ListAPIView):
-    pagination_class = StandardResultsSetPagination
-    lookup_field = ('pk',)
-    queryset = Category.objects.all()
+    pagination_class = None
     serializer_class = CategoriesViewSeriazlizer
     permission_classes = (AllowAny,)
+
+    def get_queryset(self):
+        return Category.objects.filter(sex__slug=self.kwargs['sex__slug'])
 
 
 class ProductListApiView(ListAPIView):
@@ -27,4 +28,6 @@ class ProductListApiView(ListAPIView):
     queryset = Product.objects.filter(leftovers__count__gt=0)
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
-    lookup_field = 'sex__slug'
+
+    def get_queryset(self):
+        return Category.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0)

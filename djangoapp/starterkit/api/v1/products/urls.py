@@ -5,6 +5,6 @@ from .models import Product
 from .views import ProductListApiView, CategoryListApiView
 
 urlpatterns = [
-    path('products/all', ProductListApiView.as_view()),
-    path('categories/all/<int:pk>', CategoryListApiView.as_view())
+    path('<slug:sex__slug>/products/', ProductListApiView.as_view()),
+    path('<slug:sex__slug>/categories/', CategoryListApiView.as_view())
 ]
