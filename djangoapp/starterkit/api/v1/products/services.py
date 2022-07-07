@@ -9,6 +9,7 @@ class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
 
     def filter(self, qs, value):
         if value != self.null_value:
+            print(value)
             return self.get_method(qs)(**{f'{self.field_name}__in': value.get_descendants(include_self=True)})
 
         return qs.distinct() if self.distinct else qs
