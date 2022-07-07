@@ -16,7 +16,7 @@ class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
 
 
 class ProductFilterset(django_filters.FilterSet):
-    category = TreeNodeChoiceFilter(queryset=Category.objects.all(), field_name='category')
+    category = TreeNodeChoiceFilter(queryset=Category.objects.all(), field_name='category', required=False)
     price = django_filters.RangeFilter(field_name='price')
     brand = django_filters.CharFilter(field_name="brand__slug", lookup_expr="icontains")
     color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
