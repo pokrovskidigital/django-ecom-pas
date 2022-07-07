@@ -21,7 +21,8 @@ class ProductFilterset(django_filters.FilterSet):
     brand = django_filters.CharFilter(field_name="brand__slug", lookup_expr="icontains")
     color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
                                                      queryset=Color.objects.all())
-    size = django_filters.ModelMultipleChoiceFilter(field_name="leftovers__size__slug", to_field_name='leftovers__size__slug',
+    size = django_filters.ModelMultipleChoiceFilter(field_name="leftovers__size__slug",
+                                                    to_field_name='leftovers.size.slug',
                                                     queryset=Leftover.objects.all())
 
     class Meta:
