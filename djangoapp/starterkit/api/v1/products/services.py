@@ -22,4 +22,4 @@ class ProductFilterset(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(ProductFilterset, self).__init__(*args, **kwargs)
-        self.filters['category'].field_class = TreeNodeChoiceField  # fk
+        self.filters['category'].field_class = TreeNodeChoiceField(queryset=Category.objects.all())  # fk
