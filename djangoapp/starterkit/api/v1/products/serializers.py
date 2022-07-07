@@ -143,12 +143,12 @@ class BrandSeriazlizer(ModelSerializer):
 
 
 class VariantsSerializer(ModelSerializer):
-    category = CategorySeriazlizer()
-    brand = BrandSeriazlizer()
+    color = ColorViewSerializer()
+    image = ImageViewSerializer(many=True)
 
     class Meta:
         model = Product
-        exclude = ('variants',)
+        fields = ("color", 'title', 'slug', 'image')
 
 
 class ImageViewSerializer(ModelSerializer):
@@ -187,3 +187,23 @@ class CategoriesViewSeriazlizer(ModelSerializer):
     class Meta:
         model = Category
         fields = ('title', 'slug', 'pk', 'sex_slug')
+
+
+class ColorViewSerializer(ModelSerializer):
+    class Meta:
+        model = Color
+        fields = ('title', 'code_1c')
+
+
+class ProductViewSerializer(ModelSerializer):
+    category = CategorySeriazlizer()
+    brand = BrandSeriazlizer()
+    image = ImageViewSerializer(many=True)
+    leftovers = LeftoverViewSerializer(many=True)
+    sex = SexSeriazlizer()
+    color = ColorViewSerializer()
+    variants = VariantsSerializer(many=True)
+
+    class Meta:
+        model = Product
+        fields = ('id', 'slug', 'title', 'price', 'brand', 'image', 'leftovers', 'color', 'sex',)

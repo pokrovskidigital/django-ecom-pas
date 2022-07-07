@@ -4,7 +4,7 @@ from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.pagination import PageNumberPagination
 from django_filters import rest_framework as filters
 from .models import Product, Category
-from .serializers import ProductsViewSerializer, CategoriesViewSeriazlizer
+from .serializers import ProductsViewSerializer, CategoriesViewSeriazlizer, ProductViewSerializer
 from rest_framework.permissions import AllowAny
 
 from .services import ProductFilterset
@@ -25,7 +25,7 @@ class CategoryListApiView(ListAPIView):
         return Category.objects.filter(sex__slug=self.kwargs['sex__slug'])
 
 
-class ProductListApiView(ListAPIView):
+class ProductsListApiView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     queryset = Product.objects.filter(leftovers__count__gt=0)
     serializer_class = ProductsViewSerializer
@@ -35,3 +35,9 @@ class ProductListApiView(ListAPIView):
 
     def get_queryset(self):
         return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0)
+
+
+class ProductApiView(GenericAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductViewSerializer
+    permission_classes = (AllowAny,)
