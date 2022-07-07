@@ -142,15 +142,6 @@ class BrandSeriazlizer(ModelSerializer):
                   )
 
 
-class VariantsSerializer(ModelSerializer):
-    color = ColorViewSerializer()
-    image = ImageViewSerializer(many=True)
-
-    class Meta:
-        model = Product
-        fields = ("color", 'title', 'slug', 'image')
-
-
 class ImageViewSerializer(ModelSerializer):
     class Meta:
         model = Image
@@ -193,6 +184,15 @@ class ColorViewSerializer(ModelSerializer):
     class Meta:
         model = Color
         fields = ('title', 'code_1c')
+
+
+class VariantsSerializer(ModelSerializer):
+    color = ColorViewSerializer()
+    image = ImageViewSerializer(many=True)
+
+    class Meta:
+        model = Product
+        fields = ("color", 'title', 'slug', 'image')
 
 
 class ProductViewSerializer(ModelSerializer):
