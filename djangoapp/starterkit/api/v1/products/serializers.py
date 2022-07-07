@@ -161,13 +161,13 @@ class ProductsViewSerializer(ModelSerializer):
     # category = CategorySeriazlizer()
     brand = BrandSeriazlizer()
     image = ImageViewSerializer(many=True)
-
+    size_title = serializers.CharField(read_only=True, source='leftovers.parent_size.title')
     # variants = VariantsSerializer(many=True)
     # sex = SexSeriazlizer()
 
     class Meta:
         model = Product
-        fields = ('id', 'slug', 'title', 'price', 'brand', 'image')
+        fields = ('id', 'slug', 'title', 'price', 'brand', 'image', )
 
 
 class CategoriesViewSeriazlizer(ModelSerializer):
