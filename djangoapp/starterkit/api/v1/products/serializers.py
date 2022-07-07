@@ -161,7 +161,7 @@ class LeftoverViewSerializer(ModelSerializer):
     size_title = serializers.CharField(read_only=True, source='parent_size.title')
 
     class Meta:
-        model = Image
+        model = Leftover
         fields = ('size_title', 'count',)
 
 
