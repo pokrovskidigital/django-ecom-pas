@@ -16,8 +16,10 @@ class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
 
 
 class ProductFilterset(django_filters.FilterSet):
-    category = TreeNodeChoiceFilter(queryset=Category.objects.all(), field_name='category__title')
-
     class Meta:
         model = Product
         fields = ('category',)
+
+    def __init__(self, *args, **kwargs):
+        super(ProductFilterset, self).__init__(*args, **kwargs)
+        self.filters['category'].field_class = TreeNodeChoiceField  # fk
