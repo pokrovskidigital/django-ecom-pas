@@ -22,7 +22,6 @@ class ProductFilterset(django_filters.FilterSet):
     color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
                                                      queryset=Color.objects.all())
     size = django_filters.ModelMultipleChoiceFilter(field_name="leftovers__parent_size__slug",
-                                                    to_field_name='parent_size.slug',
                                                     queryset=Leftover.objects.all())
 
     class Meta:
