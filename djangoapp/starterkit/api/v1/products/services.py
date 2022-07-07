@@ -1,7 +1,7 @@
 from mptt.forms import TreeNodeChoiceField
 import django_filters
 
-from models import Product
+from .models import Product
 
 
 class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
