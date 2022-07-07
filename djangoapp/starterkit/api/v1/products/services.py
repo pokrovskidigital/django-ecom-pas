@@ -1,7 +1,7 @@
 from mptt.forms import TreeNodeChoiceField
 import django_filters
 
-from .models import Product
+from .models import Product, Category
 
 
 class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
@@ -15,7 +15,7 @@ class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
 
 
 class ProductFilterset(django_filters.FilterSet):
-    category = TreeNodeChoiceFilter()
+    category = TreeNodeChoiceFilter(queryset=Category.objects.all())
 
     class Meta:
         model = Product
