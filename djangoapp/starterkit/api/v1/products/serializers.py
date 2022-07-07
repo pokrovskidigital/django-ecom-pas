@@ -167,7 +167,7 @@ class ProductsViewSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'slug', 'title', 'price', 'brand', 'image', )
+        fields = ('id', 'slug', 'title', 'price', 'brand', 'image','size_title' )
 
 
 class CategoriesViewSeriazlizer(ModelSerializer):
