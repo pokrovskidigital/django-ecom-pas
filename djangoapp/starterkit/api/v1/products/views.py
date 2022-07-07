@@ -3,6 +3,8 @@ from rest_framework.generics import ListAPIView, GenericAPIView
 # Create your views here.
 from rest_framework.pagination import PageNumberPagination
 from django_filters import rest_framework as filters
+from rest_framework.response import Response
+
 from .models import Product, Category
 from .serializers import ProductsViewSerializer, CategoriesViewSeriazlizer, ProductViewSerializer
 from rest_framework.permissions import AllowAny
@@ -41,3 +43,9 @@ class ProductApiView(GenericAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductViewSerializer
     permission_classes = (AllowAny,)
+
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
