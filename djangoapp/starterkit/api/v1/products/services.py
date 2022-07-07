@@ -1,7 +1,7 @@
 from mptt.forms import TreeNodeChoiceField
 import django_filters
 
-from .models import Product, Category, Color, Leftover
+from .models import Product, Category, Color, Leftover, Size
 
 
 class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
@@ -21,8 +21,8 @@ class ProductFilterset(django_filters.FilterSet):
     brand = django_filters.CharFilter(field_name="brand__slug", lookup_expr="icontains")
     color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
                                                      queryset=Color.objects.all())
-    size = django_filters.ModelMultipleChoiceFilter(field_name="leftovers__parent_size", to_field_name="parent_size",
-                                                    queryset=Leftover.objects.all())
+    size = django_filters.ModelMultipleChoiceFilter(field_name="leftovers__parent_size__slug", to_field_name="slug",
+                                                    queryset=Size.objects.all())
 
     class Meta:
         model = Product
