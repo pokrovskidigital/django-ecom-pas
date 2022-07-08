@@ -57,6 +57,6 @@ class OptionCategoryView(APIView):
 
     def get(self, request, sex__slug):
         products = Product.objects.filter(sex__slug=sex__slug)
-        options_dict = {'size': products.values('leftovers__parent_size__title', flat=True), 'colors': [],
+        options_dict = {'size': products.values_list('leftovers__parent_size__title', flat=True), 'colors': [],
                         'max_price': 0, 'min_price': 0}
         return Response(options_dict)
