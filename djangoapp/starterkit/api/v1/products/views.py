@@ -56,7 +56,7 @@ class OptionCategoryView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, sex__slug, category__id):
-        category = Category.objects.get(category__id=category__id)
+        category = Category.objects.get(pk=category__id)
         products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0,
                                           category__id__in=category.get_descendants(include_self=True))
         options_dict = {'sizes': [], 'colors': [],
