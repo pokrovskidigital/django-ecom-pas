@@ -55,5 +55,5 @@ class ProductApiView(GenericAPIView):
 class OptionCategoryView(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request):
+    def get(self, request, sex__slug):
         return Response(request)
