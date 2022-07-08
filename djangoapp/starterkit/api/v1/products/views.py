@@ -62,7 +62,9 @@ class OptionCategoryView(APIView):
         for color in products.values_list('color__title', 'color__code_1c'):
             if color[0] not in options_dict['colors'] and color[0] is not None:
                 options_dict['colors'].append(color)
-        for size in products.values_list('leftovers__parent_size__title', flat=True):
+        for size in products.values_list('leftovers__parent_size__title'):
             if size not in options_dict['sizes']:
                 options_dict['sizes'].append(size)
+        options_dict['min_price'] = products.order_by('-price').first().price
+        options_dict['max_price'] = products.order_by('price').first().price
         return Response(options_dict)
