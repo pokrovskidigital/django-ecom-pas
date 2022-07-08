@@ -14,6 +14,7 @@ admin.site.register(Menu, MenuAdmin)
 class ColumnAdmin(admin.ModelAdmin):
     list_display = ['heading', 'pk']
     ordering = ['pk']
+    filter_horizontal = ("categories",)
 
 
 admin.site.register(Column, ColumnAdmin)
