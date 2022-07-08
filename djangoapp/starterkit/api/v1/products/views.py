@@ -37,7 +37,7 @@ class ProductsListApiView(ListAPIView):
     filterset_class = ProductFilterset
 
     def get_queryset(self):
-        return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0)
+        return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0).distinct()
 
 
 class ProductApiView(GenericAPIView):
