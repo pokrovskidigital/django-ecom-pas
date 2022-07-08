@@ -177,7 +177,7 @@ class CategoriesViewSeriazlizer(ModelSerializer):
 
     class Meta:
         model = Category
-        fields = ('title', 'slug', 'pk', 'sex_slug')
+        fields = ('title', 'slug', 'pk', 'sex_slug', 'parent')
 
 
 class ColorViewSerializer(ModelSerializer):
