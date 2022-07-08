@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView, GenericAPIView
+from rest_framework.views import APIView
+
 # Create your views here.
 from rest_framework.pagination import PageNumberPagination
 from django_filters import rest_framework as filters
@@ -44,8 +46,14 @@ class ProductApiView(GenericAPIView):
     serializer_class = ProductViewSerializer
     permission_classes = (AllowAny,)
 
-
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+
+class OptionCategoryView(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request):
+        return Response(request)
