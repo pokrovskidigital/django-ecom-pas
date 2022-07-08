@@ -59,8 +59,8 @@ class OptionCategoryView(APIView):
         products = Product.objects.filter(sex__slug=sex__slug)
         options_dict = {'sizes': [], 'colors': [],
                         'max_price': 0, 'min_price': 0}
-        for color in products.values_list('color__title', flat=True):
-            if color not in options_dict['colors'] and color is not None:
+        for color in products.values_list(('color__title', 'color__code_1c'), flat=True):
+            if color[0] not in options_dict['colors'] and color is not None:
                 options_dict['colors'].append(color)
         for size in products.values_list('leftovers__parent_size__title', flat=True):
             if size not in options_dict['sizes']:
