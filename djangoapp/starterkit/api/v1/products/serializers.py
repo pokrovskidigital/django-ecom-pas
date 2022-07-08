@@ -171,7 +171,7 @@ class ProductsViewSerializer(ModelSerializer):
 
 
 class CategoriesViewSeriazlizer(ModelSerializer):
-    # parent = ParentCategorySerializer()
+    parent = ParentCategorySerializer()
 
     sex_slug = serializers.SlugField(read_only=True, source="sex.slug")
 
