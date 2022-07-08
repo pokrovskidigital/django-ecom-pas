@@ -31,7 +31,6 @@ class CategoryListApiView(ListAPIView):
 
 class ProductsListApiView(ListAPIView):
     pagination_class = StandardResultsSetPagination
-    queryset = Product.objects.filter(leftovers__count__gt=0)
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
