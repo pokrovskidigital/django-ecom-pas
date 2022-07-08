@@ -56,17 +56,21 @@ class OptionCategoryView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, sex__slug, category__id):
-        category = Category.objects.get(pk=category__id)
-        products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0,
-                                          category__id__in=category.get_descendants(include_self=True))
         options_dict = {'sizes': [], 'colors': [],
                         'max_price': 0, 'min_price': 0}
-        for color in products.values_list('color__title', 'color__code_1c'):
-            if color[0] not in options_dict['colors'] and color[0] is not None:
-                options_dict['colors'].append(color)
-        for size in products.values_list('leftovers__parent_size__title'):
-            if size not in options_dict['sizes']:
-                options_dict['sizes'].append(size)
-        options_dict['min_price'] = products.order_by('-price').first().price
-        options_dict['max_price'] = products.order_by('price').first().price
+
+        try:
+            category = Category.objects.get(pk=category__id)
+            products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0,
+                                              category__id__in=category.get_descendants(include_self=True))
+            for color in products.values_list('color__title', 'color__code_1c'):
+                if color[0] not in options_dict['colors'] and color[0] is not None:
+                    options_dict['colors'].append(color)
+            for size in products.values_list('leftovers__parent_size__title'):
+                if size not in options_dict['sizes']:
+                    options_dict['sizes'].append(size)
+            options_dict['min_price'] = products.order_by('-price').first().price
+            options_dict['max_price'] = products.order_by('price').first().price
+        except:
+            pass
         return Response(options_dict)
