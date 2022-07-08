@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     "corsheaders",
     'api.v1.products',
+    'api.v1.menu',
     'rest_framework',
     'django_filters',
     'mptt',

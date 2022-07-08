@@ -180,6 +180,12 @@ class CategoriesViewSeriazlizer(ModelSerializer):
         fields = ('title', 'slug', 'pk', 'sex_slug', 'parent')
 
 
+class CategoriesMenuSeriazlizer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('title', 'slug',)
+
+
 class ColorViewSerializer(ModelSerializer):
     class Meta:
         model = Color
