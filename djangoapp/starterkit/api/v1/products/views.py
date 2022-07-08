@@ -55,8 +55,8 @@ class ProductApiView(GenericAPIView):
 class OptionCategoryView(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request, sex__slug):
-        products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
+    def get(self, request, sex__slug, category__id):
+        products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0, category__id=category__id)
         options_dict = {'sizes': [], 'colors': [],
                         'max_price': 0, 'min_price': 0}
         for color in products.values_list('color__title', 'color__code_1c'):
