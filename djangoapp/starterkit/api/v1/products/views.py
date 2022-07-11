@@ -36,7 +36,7 @@ class ProductsListApiView(ListAPIView):
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,f.SearchFilter)
     filterset_class = ProductFilterset
-    search_fields = ['title', 'brand__title', 'color__title', 'description', ]
+    search_fields = ['@title', '@brand__title', '@color__title', '@description', ]
 
     def get_queryset(self):
         return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0).distinct()
