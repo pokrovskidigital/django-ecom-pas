@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Menu, Column, PromoBanner
+from .models import Menu, Column, PromoBanner, Row
 
 
 # Register your models here.
@@ -14,10 +14,16 @@ admin.site.register(Menu, MenuAdmin)
 class ColumnAdmin(admin.ModelAdmin):
     list_display = ['heading', 'pk']
     ordering = ['pk']
-    filter_horizontal = ("categories",)
+    filter_horizontal = ("rows",)
 
 
-admin.site.register(Column, ColumnAdmin)
+class RowAdmin(admin.ModelAdmin):
+    list_display = ['heading', 'pk']
+    ordering = ['pk']
+    filter_horizontal = ("brand", 'category')
+
+
+admin.site.register(Row, RowAdmin)
 
 
 class PromoBannerAdmin(admin.ModelAdmin):

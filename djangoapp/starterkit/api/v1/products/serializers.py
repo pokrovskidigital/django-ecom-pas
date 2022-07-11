@@ -180,9 +180,15 @@ class CategoriesViewSeriazlizer(ModelSerializer):
         fields = ('title', 'slug', 'pk', 'sex_slug', 'parent')
 
 
-class CategoriesMenuSeriazlizer(ModelSerializer):
+class CategoriesMenuSerializer(ModelSerializer):
     class Meta:
         model = Category
+        fields = ('title', 'slug',)
+
+
+class BrandMenuSerializer(ModelSerializer):
+    class Meta:
+        model = Brand
         fields = ('title', 'slug',)
 
 

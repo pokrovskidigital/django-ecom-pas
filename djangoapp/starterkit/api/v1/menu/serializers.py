@@ -1,11 +1,20 @@
-from ..products.serializers import CategoriesMenuSeriazlizer
-from .models import Column, Menu, PromoBanner
+from ..products.serializers import CategoriesMenuSerializer, BrandMenuSerializer
+from .models import Column, Menu, PromoBanner, Row
 
 from rest_framework import serializers
 
 
+class RowSerializer(serializers.ModelSerializer):
+    category = CategoriesMenuSerializer()
+    brand = BrandMenuSerializer()
+
+    class Meta:
+        model = Row
+        fields = '__all__'
+
+
 class ColumnSerializer(serializers.ModelSerializer):
-    categories = CategoriesMenuSeriazlizer(many=True)
+    rows = RowSerializer(many=True)
 
     class Meta:
         model = Column
