@@ -17,6 +17,9 @@ class ColumnAdmin(admin.ModelAdmin):
     filter_horizontal = ("rows",)
 
 
+admin.site.register(Column, ColumnAdmin)
+
+
 class RowAdmin(admin.ModelAdmin):
     list_display = ['heading', 'pk']
     ordering = ['pk']
