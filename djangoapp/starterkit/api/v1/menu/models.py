@@ -1,12 +1,12 @@
 from django.db import models
 from ..products.models import Category, Image, Sex, Brand
-
+from mptt.models import TreeForeignKey
 
 # Create your models here.
 class Row(models.Model):
     heading = models.CharField(max_length=200, default='-')
     path = models.CharField(max_length=200, default='-')
-    category = models.ForeignKey(Category, blank=True, on_delete=models.CASCADE, null=True, related_name='row')
+    category = TreeForeignKey(Category, blank=True, on_delete=models.CASCADE, null=True, related_name='row')
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.CASCADE, related_name='row')
     sort_id = models.PositiveIntegerField(default=0)
 
