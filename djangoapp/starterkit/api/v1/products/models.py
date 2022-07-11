@@ -149,7 +149,8 @@ class Product(models.Model):
         return self.price - (self.price * 0.01 * self.discount)
 
     def __str__(self):
-        return self.title
+        return self.title + " " + self.brand.title + self.sku
+
 
 
 class Labels(models.Model):
