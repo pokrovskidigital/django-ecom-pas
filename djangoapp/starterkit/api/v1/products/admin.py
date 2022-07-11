@@ -1,10 +1,16 @@
 from django.contrib import admin
-from .models import Product, Category, Tag, Size, Leftover, Sex, Season, Color, Brand, Image
+from .models import Product, Category, Tag, Size, Leftover, Sex, Season, Color, Brand, Image, Compilation
 from mptt.admin import MPTTModelAdmin
 
 
 # Register your models here.
+class CompilationsAdmin(admin.ModelAdmin):
+    list_display = ['title', 'pk']
+    ordering = ['pk']
+    filter_horizontal = ("products", 'extra_images', )
 
+
+admin.site.register(Compilation, CompilationsAdmin)
 
 class SexAdmin(admin.ModelAdmin):
     list_display = ['title', 'pk']

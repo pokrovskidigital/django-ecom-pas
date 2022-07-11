@@ -7,8 +7,9 @@ from rest_framework.pagination import PageNumberPagination
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
 
-from .models import Product, Category
-from .serializers import ProductsViewSerializer, CategoriesViewSeriazlizer, ProductViewSerializer
+from .models import Product, Category, Compilation
+from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
+    CompilationsViewSerializer
 from rest_framework.permissions import AllowAny
 
 from .services import ProductFilterset
@@ -22,7 +23,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 
 class CategoryListApiView(ListAPIView):
     pagination_class = None
-    serializer_class = CategoriesViewSeriazlizer
+    serializer_class = CategoriesViewSerializer
     permission_classes = (AllowAny,)
 
     def get_queryset(self):
@@ -56,7 +57,7 @@ class OptionCategoryView(APIView):
 
     def get(self, request, sex__slug, category__id):
         options_dict = {'sizes': [], 'colors': [],
-                        'max_price': 0, 'min_price': 0, "brands":[]}
+                        'max_price': 0, 'min_price': 0, "brands": []}
 
         try:
             category = Category.objects.get(pk=category__id)
@@ -76,3 +77,11 @@ class OptionCategoryView(APIView):
         except:
             pass
         return Response(options_dict)
+
+
+class CompilationListApiView(ListAPIView):
+    pagination_class = None
+    serializer_class = CompilationsViewSerializer
+    permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    queryset = Compilation.objects.all()

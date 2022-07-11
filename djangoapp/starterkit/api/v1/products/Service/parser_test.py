@@ -2,8 +2,8 @@ import json
 import xmltodict
 from progress.bar import IncrementalBar
 from uuslug import slugify
-from ..serializers import CategoryCreateSeriazlizer, ProductCreateSeriazlizer, SexCreateSeriazlizer, \
-    ColorCreateSeriazlizer, SizeCreateSeriazlizer, TagCreateSeriazlizer, LeftoverCreateSeriazlizer
+from ..serializers import CategoryCreateSerializer, ProductCreateSerializer, SexCreateSerializer, \
+    ColorCreateSerializer, SizeCreateSerializer, TagCreateSerializer, LeftoverCreateSerializer
 from ..models import Product, Category, Sex, Color, Tag, Leftover, Size
 import random
 import progress
@@ -42,7 +42,7 @@ def parse_category():
             category_data['discription'] = ""
 
             data['category'].append(category_data)
-        ser = CategoryCreateSeriazlizer(data=data['category'], many=True)
+        ser = CategoryCreateSerializer(data=data['category'], many=True)
         ser.is_valid(raise_exception=True)
         ser.create(ser.validated_data)
 
@@ -59,7 +59,7 @@ def parse_sex(product):
                 'title': title,
                 'slug': slugify(title)
             }
-            ser = SexCreateSeriazlizer(data=sex)
+            ser = SexCreateSerializer(data=sex)
             ser.is_valid(raise_exception=True)
             sex_obj = ser.create(ser.validated_data)
 
@@ -67,7 +67,7 @@ def parse_sex(product):
 
 
 def create_category(cat_data):
-    ser = CategoryCreateSeriazlizer(data=cat_data)
+    ser = CategoryCreateSerializer(data=cat_data)
     ser.is_valid(raise_exception=True)
     return ser.create(ser.validated_data)
 
@@ -94,7 +94,7 @@ def create_color(data):
                     'code_1c': options['Значение'],
                     'slug': slugify(options['Значение'])
                 }
-            ser = ColorCreateSeriazlizer(data=color)
+            ser = ColorCreateSerializer(data=color)
             ser.is_valid(raise_exception=True)
             return ser.create(ser.validated_data)[0]
 
@@ -130,7 +130,7 @@ def parse_product():
                         tag_list = prod['Описание'].split("#")[1:]
                         tag_list = [x for x in tag_list if x]
                         for tag in tag_list:
-                            tag_ser = TagCreateSeriazlizer(data={'title': tag, 'slug': slugify(tag)})
+                            tag_ser = TagCreateSerializer(data={'title': tag, 'slug': slugify(tag)})
                             tag_ser.is_valid(raise_exception=True)
 
                             tags.append(tag_ser.create(tag_ser.validated_data).pk)
@@ -194,7 +194,7 @@ def parse_product():
                     'slug': slugify(title + " " + id_1c)
                 }
             product_list.append(data)
-            ser = ProductCreateSeriazlizer(data=data)
+            ser = ProductCreateSerializer(data=data)
             ser.is_valid(raise_exception=True)
             ser.save()
 
@@ -249,13 +249,13 @@ def create_leftover(offer):
         except:
             size = None
     try:
-        size_ser = SizeCreateSeriazlizer(data={"title": size})
+        size_ser = SizeCreateSerializer(data={"title": size})
         size_ser.is_valid(raise_exception=True)
         size = size_ser.create(size_ser.validated_data).pk
     except:
         pass
 
-    leftovers_ser = LeftoverCreateSeriazlizer(data={'parent_size': size, "count": count})
+    leftovers_ser = LeftoverCreateSerializer(data={'parent_size': size, "count": count})
     leftovers_ser.is_valid(raise_exception=True)
     return leftovers_ser.save()
 
@@ -287,7 +287,7 @@ def parse_offers(sku_list):
                             'code_1c': color_data,
                             'slug': slugify(color_data)
                         }
-                    ser = ColorCreateSeriazlizer(data=color)
+                    ser = ColorCreateSerializer(data=color)
                     ser.is_valid(raise_exception=True)
                     color = ser.create(ser.validated_data).pk
                 except:

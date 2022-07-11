@@ -5,7 +5,7 @@ from .models import *
 from drf_writable_nested.serializers import WritableNestedModelSerializer
 
 
-class SexCreateSeriazlizer(ModelSerializer):
+class SexCreateSerializer(ModelSerializer):
     class Meta:
         model = Sex
         fields = "__all__"
@@ -17,7 +17,7 @@ class SexCreateSeriazlizer(ModelSerializer):
         return category
 
 
-class SexSeriazlizer(ModelSerializer):
+class SexSerializer(ModelSerializer):
     class Meta:
         model = Sex
         fields = "__all__"
@@ -25,23 +25,23 @@ class SexSeriazlizer(ModelSerializer):
 
 class ParentCategorySerializer(ModelSerializer):
     parent = PrimaryKeyRelatedField(queryset=Category.objects.all())
-    sex = SexSeriazlizer()
+    sex = SexSerializer()
 
     class Meta:
         model = Category
         fields = ('title', 'slug', 'id', 'parent', 'sex',)
 
 
-class CategorySeriazlizer(ModelSerializer):
+class CategorySerializer(ModelSerializer):
     parent = ParentCategorySerializer()
-    sex = SexSeriazlizer()
+    sex = SexSerializer()
 
     class Meta:
         model = Category
         fields = ('title', 'slug', 'pk', 'parent', 'sex',)
 
 
-class CategoryCreateSeriazlizer(ModelSerializer):
+class CategoryCreateSerializer(ModelSerializer):
     class Meta:
         model = Category
         fields = "__all__"
@@ -53,7 +53,7 @@ class CategoryCreateSeriazlizer(ModelSerializer):
         return category
 
 
-class SizeCreateSeriazlizer(ModelSerializer):
+class SizeCreateSerializer(ModelSerializer):
     class Meta:
         model = Size
         fields = "__all__"
@@ -63,7 +63,7 @@ class SizeCreateSeriazlizer(ModelSerializer):
         return size
 
 
-class ColorCreateSeriazlizer(ModelSerializer):
+class ColorCreateSerializer(ModelSerializer):
     class Meta:
         model = Color
         fields = "__all__"
@@ -80,7 +80,7 @@ class ColorCreateSeriazlizer(ModelSerializer):
         return color
 
 
-class TagCreateSeriazlizer(ModelSerializer):
+class TagCreateSerializer(ModelSerializer):
     class Meta:
         model = Tag
         fields = "__all__"
@@ -90,17 +90,7 @@ class TagCreateSeriazlizer(ModelSerializer):
         return tag[0]
 
 
-class SizeCreateSeriazlizer(ModelSerializer):
-    class Meta:
-        model = Size
-        fields = "__all__"
-
-    def create(self, validated_data):
-        size = Size.objects.update_or_create(title=validated_data.get('title', None), defaults=validated_data)
-        return size[0]
-
-
-class SizeTypeCreateSeriazlizer(ModelSerializer):
+class SizeTypeCreateSerializer(ModelSerializer):
     class Meta:
         model = SizeType
         fields = "__all__"
@@ -111,31 +101,31 @@ class SizeTypeCreateSeriazlizer(ModelSerializer):
         return size_type[0]
 
 
-class LeftoverCreateSeriazlizer(ModelSerializer):
+class LeftoverCreateSerializer(ModelSerializer):
     class Meta:
         model = Leftover
         fields = "__all__"
 
 
-class BrandCreateSeriazlizer(ModelSerializer):
+class BrandCreateSerializer(ModelSerializer):
     class Meta:
         model = Brand
         fields = "__all__"
 
 
-class SeasonSeriazlizer(ModelSerializer):
+class SeasonSerializer(ModelSerializer):
     class Meta:
         model = Season
         fields = "__all__"
 
 
-class ProductCreateSeriazlizer(WritableNestedModelSerializer):
+class ProductCreateSerializer(WritableNestedModelSerializer):
     class Meta:
         model = Product
         fields = "__all__"
 
 
-class BrandSeriazlizer(ModelSerializer):
+class BrandSerializer(ModelSerializer):
     class Meta:
         model = Brand
         fields = ("title",
@@ -158,7 +148,7 @@ class LeftoverViewSerializer(ModelSerializer):
 
 class ProductsViewSerializer(ModelSerializer):
     # category = CategorySeriazlizer()
-    brand = BrandSeriazlizer()
+    brand = BrandSerializer()
     image = ImageViewSerializer(many=True)
     # size_title = serializers.CharField(read_only=True, source='leftovers.parent_size.title')
     leftovers = LeftoverViewSerializer(many=True)
@@ -170,7 +160,7 @@ class ProductsViewSerializer(ModelSerializer):
         fields = ('id', 'slug', 'title', 'price', 'brand', 'image', 'leftovers')
 
 
-class CategoriesViewSeriazlizer(ModelSerializer):
+class CategoriesViewSerializer(ModelSerializer):
     parent = ParentCategorySerializer()
 
     sex_slug = serializers.SlugField(read_only=True, source="sex.slug")
@@ -208,14 +198,24 @@ class VariantsSerializer(ModelSerializer):
 
 
 class ProductViewSerializer(ModelSerializer):
-    category = CategorySeriazlizer()
-    brand = BrandSeriazlizer()
+    category = CategorySerializer()
+    brand = BrandSerializer()
     image = ImageViewSerializer(many=True)
     leftovers = LeftoverViewSerializer(many=True)
-    sex = SexSeriazlizer()
+    sex = SexSerializer()
     color = ColorViewSerializer()
     variants = VariantsSerializer(many=True)
 
     class Meta:
         model = Product
         fields = ('id', 'slug', 'title', 'price', 'brand', 'image', 'leftovers', 'color', 'sex', 'category', 'variants')
+
+
+class CompilationsViewSerializer(ModelSerializer):
+    title_image = ImageViewSerializer(many=True)
+    extra_images = ImageViewSerializer(many=True)
+    products = ProductViewSerializer(many=True)
+
+    class Meta:
+        model = Compilation
+        fields = "__all__"

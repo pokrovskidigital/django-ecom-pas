@@ -4,8 +4,8 @@ import pymssql
 from slugify import slugify
 
 from ..models import Size, Leftover, Tag, Color, Sex, Category, Product, Brand, Image
-from ..serializers import CategoryCreateSeriazlizer, SexCreateSeriazlizer, BrandCreateSeriazlizer, \
-    ProductCreateSeriazlizer, TagCreateSeriazlizer
+from ..serializers import CategoryCreateSerializer, SexCreateSerializer, BrandCreateSerializer, \
+    ProductCreateSerializer, TagCreateSerializer
 from .parser_test import parse_offers
 from progress.bar import *
 from django.conf import settings
@@ -60,7 +60,7 @@ class DBParser():
                 sex.append(row['Gender'])
         bar = IncrementalBar('Countdown', max=len(sex))
         for s in sex:
-            ser = SexCreateSeriazlizer(data={'title': s, 'slug': slugify(s)})
+            ser = SexCreateSerializer(data={'title': s, 'slug': slugify(s)})
             ser.is_valid()
             sex_object = ser.save()
             sex_objects.append(sex_object[0])
@@ -82,7 +82,7 @@ class DBParser():
                     'title': row['Name'],
                     'sex': sex.pk,
                 }
-                ser = CategoryCreateSeriazlizer(data=category)
+                ser = CategoryCreateSerializer(data=category)
                 ser.is_valid()
                 data = ser.create(ser.validated_data)
                 data[0].pk
@@ -114,7 +114,7 @@ class DBParser():
                     'sex': sex.pk,
                     'parent': parent_category
                 }
-                ser = CategoryCreateSeriazlizer(data=sub_category)
+                ser = CategoryCreateSerializer(data=sub_category)
                 ser.is_valid(raise_exception=True)
                 data = ser.create(ser.validated_data)
             bar.next()
@@ -136,7 +136,7 @@ class DBParser():
             }
             brands["brands"].append(brand)
             try:
-                ser = BrandCreateSeriazlizer(data=brand)
+                ser = BrandCreateSerializer(data=brand)
                 ser.is_valid()
                 ser.save()
             except:
@@ -173,7 +173,7 @@ class DBParser():
                     'category': category.pk,
                     'slug': slugify(row['Name'] + " " + brand.title + ' ' + row['Article_Id'])
                 }
-                ser = ProductCreateSeriazlizer(data=product)
+                ser = ProductCreateSerializer(data=product)
                 ser.is_valid(raise_exception=True)
                 prod = ser.save()
                 product_sku.append(prod.sku)
@@ -250,7 +250,7 @@ class DBParser():
             if '#' in description_not_edited:
                 tags = description_not_edited.split('#')[1:]
                 for tag in tags:
-                    ser = TagCreateSeriazlizer(data={'title': tag, 'slug': slugify(tag)})
+                    ser = TagCreateSerializer(data={'title': tag, 'slug': slugify(tag)})
                     ser.is_valid()
                     tag_saved = ser.save()
                     tags_pk.append(tag_saved.pk)

@@ -176,10 +176,10 @@ class Options(models.Model):
     value = models.CharField(max_length=200, verbose_name="Значение")
 
 
-class Compilations(models.Model):
+class Compilation(models.Model):
     title = models.CharField(max_length=200, verbose_name="title")
     subtitle = models.CharField(max_length=200, verbose_name="subtitle")
     text = models.TextField(max_length=1000, verbose_name="text")
     title_image = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True)
     products = models.ManyToManyField('Product', null=True, blank=True, related_name="Compilations")
-    exta_images = models.ManyToManyField('Image', null=True, blank=True, related_name="Compilations")
+    extra_images = models.ManyToManyField('Image', null=True, blank=True, related_name="Compilations")
