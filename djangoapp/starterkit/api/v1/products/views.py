@@ -41,7 +41,6 @@ class ProductsListApiView(ListAPIView):
     def get_queryset(self):
         return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0).distinct()
 
-
 class ProductApiView(GenericAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductViewSerializer

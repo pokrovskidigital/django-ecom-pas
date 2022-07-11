@@ -194,7 +194,7 @@ class VariantsSerializer(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ("color", 'title', 'slug', 'image')
+        fields = ('pk', "color", 'title', 'slug', 'image')
 
 
 class ProductViewSerializer(ModelSerializer):
