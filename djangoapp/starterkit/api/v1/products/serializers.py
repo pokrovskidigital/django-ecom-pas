@@ -212,7 +212,7 @@ class ProductViewSerializer(ModelSerializer):
 
 
 class CompilationsViewSerializer(ModelSerializer):
-    title_image = ImageViewSerializer(many=True)
+    title_image = ImageViewSerializer()
     extra_images = ImageViewSerializer(many=True)
     products = ProductViewSerializer(many=True)
 
