@@ -20,7 +20,6 @@ class ColumnAdmin(admin.ModelAdmin):
 class RowAdmin(admin.ModelAdmin):
     list_display = ['heading', 'pk']
     ordering = ['pk']
-    filter_horizontal = ("brand", 'category')
 
 
 admin.site.register(Row, RowAdmin)
