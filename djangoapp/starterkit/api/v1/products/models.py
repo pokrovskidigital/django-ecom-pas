@@ -189,7 +189,7 @@ class Compilation(models.Model):
         return self.title + ' ' + self.sex.title
 
 
-class MainMenu(models.Model):
+class MainPage(models.Model):
     compilations = models.ManyToManyField('Compilation', related_name='MainMenu')
     sex = models.ForeignKey('Sex', on_delete=models.PROTECT, null=True, blank=True)
 

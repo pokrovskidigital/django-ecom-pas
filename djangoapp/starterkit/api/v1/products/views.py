@@ -7,9 +7,9 @@ from rest_framework.pagination import PageNumberPagination
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
 
-from .models import Product, Category, Compilation, MainMenu
+from .models import Product, Category, Compilation, MainPage
 from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
-    CompilationsViewSerializer, MainMenuViewSerializer
+    CompilationsViewSerializer, MainPageViewSerializer
 from rest_framework.permissions import AllowAny
 
 from .services import ProductFilterset
@@ -89,11 +89,11 @@ class CompilationListApiView(ListAPIView):
         return Compilation.objects.filter(sex__slug=self.kwargs['sex__slug']).distinct()
 
 
-class MainMenuListApiView(ListAPIView):
+class MainPageListApiView(ListAPIView):
     pagination_class = None
-    serializer_class = MainMenuViewSerializer
+    serializer_class = MainPageViewSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self):
-        return MainMenu.objects.filter(sex__slug=self.kwargs['sex__slug']).distinct()
+        return MainPage.objects.filter(sex__slug=self.kwargs['sex__slug']).distinct()

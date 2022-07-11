@@ -3,7 +3,7 @@ from django.urls import path
 
 from .models import Product
 from .views import ProductsListApiView, CategoryListApiView, ProductApiView, OptionCategoryView, CompilationListApiView, \
-    MainMenuListApiView
+    MainPageListApiView
 
 urlpatterns = [
     path('<slug:sex__slug>/products/', ProductsListApiView.as_view()),
@@ -11,5 +11,5 @@ urlpatterns = [
     path('product/<int:pk>', ProductApiView.as_view()),
     path('<slug:sex__slug>/<int:category__id>/options', OptionCategoryView.as_view()),
     path('<slug:sex__slug>/compilations/', CompilationListApiView.as_view()),
-    path('<slug:sex__slug>/mainmenu/', MainMenuListApiView.as_view())
+    path('<slug:sex__slug>/main_page/', MainPageListApiView.as_view())
 ]

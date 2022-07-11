@@ -1,15 +1,15 @@
 from django.contrib import admin
-from .models import Product, Category, Tag, Size, Leftover, Sex, Season, Color, Brand, Image, Compilation, MainMenu
+from .models import Product, Category, Tag, Size, Leftover, Sex, Season, Color, Brand, Image, Compilation, MainPage
 from mptt.admin import MPTTModelAdmin
 
 
-class MainMenuAdmin(admin.ModelAdmin):
+class MainPageAdmin(admin.ModelAdmin):
     list_display = ['pk', 'sex']
     ordering = ['pk']
     filter_horizontal = ("compilations",)
 
 
-admin.site.register(MainMenu, MainMenuAdmin)
+admin.site.register(MainPage, MainPageAdmin)
 
 
 # Register your models here.

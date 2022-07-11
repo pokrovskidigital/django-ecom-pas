@@ -221,10 +221,10 @@ class CompilationsViewSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class MainMenuViewSerializer(ModelSerializer):
+class MainPageViewSerializer(ModelSerializer):
     sex = SexSerializer()
     compilations = CompilationsViewSerializer(many=True)
 
     class Meta:
-        model = MainMenu
+        model = MainPage
         fields = "__all__"
