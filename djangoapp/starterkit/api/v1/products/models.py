@@ -120,7 +120,7 @@ class Product(models.Model):
     description = models.TextField(default='', max_length=1000)
     tags = models.ManyToManyField('Tag', blank=True)
     leftovers = models.ManyToManyField('Leftover', blank=True, null=True,
-    related_name = "product")
+                                       related_name="product")
     brand = models.ForeignKey('Brand', on_delete=models.PROTECT, null=True, blank=True, )
     collection = models.CharField(max_length=200, verbose_name="collection", blank=True, null=True)
     fashion_collection = models.CharField(max_length=200, verbose_name="fashion_collection", blank=True, null=True)
@@ -179,7 +179,19 @@ class Options(models.Model):
 class Compilation(models.Model):
     title = models.CharField(max_length=200, verbose_name="title")
     subtitle = models.CharField(max_length=200, verbose_name="subtitle")
+    sex = models.ForeignKey('Sex', on_delete=models.PROTECT, null=True, blank=True)
     text = models.TextField(max_length=1000, verbose_name="text")
     title_image = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True)
     products = models.ManyToManyField('Product', null=True, blank=True, related_name="Compilations")
     extra_images = models.ManyToManyField('Image', null=True, blank=True, related_name="Compilations")
+
+    def __str__(self):
+        return self.title + ' ' + self.sex.title
+
+
+class MainMenu(models.Model):
+    compilations = models.ManyToManyField('Compilation', related_name='MainMenu')
+    sex = models.ForeignKey('Sex', on_delete=models.PROTECT, null=True, blank=True)
+
+    def __str__(self):
+        return self.sex.title
