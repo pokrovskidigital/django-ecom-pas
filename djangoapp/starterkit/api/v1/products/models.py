@@ -111,12 +111,40 @@ class Size(models.Model):
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=200, verbose_name="title")
-    sku = models.CharField(max_length=200, verbose_name="sku")
-    sex = models.ForeignKey('Sex', on_delete=models.PROTECT, null=True, blank=True, )
-    category = TreeForeignKey('Category', on_delete=models.CASCADE, null=True, blank=True, related_name="product")
-    image = models.ManyToManyField('Image', null=True, blank=True, related_name="product")
-    slug = models.SlugField(max_length=250, unique=False, db_index=True, verbose_name="slug", default="-")
+    title = models.CharField(
+        max_length=200,
+        verbose_name="title"
+    )
+    sku = models.CharField(
+        max_length=200,
+        verbose_name="sku"
+    )
+    sex = models.ForeignKey(
+        'Sex',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+    )
+    category = TreeForeignKey(
+        'Category',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="product"
+    )
+    image = models.ManyToManyField(
+        'Image',
+        null=True,
+        blank=True,
+        related_name="product"
+    )
+    slug = models.SlugField(
+        max_length=250,
+        unique=False,
+        db_index=True,
+        verbose_name="slug",
+        default="-"
+    )
     description = models.TextField(default='', max_length=1000)
     tags = models.ManyToManyField('Tag', blank=True)
     leftovers = models.ManyToManyField('Leftover', blank=True, null=True,

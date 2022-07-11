@@ -16,10 +16,31 @@ class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
         return qs.distinct() if self.distinct else qs
 
 
+class MultipleCharFilter(django_filters.CharFilter):
+    """
+    Allows multiple options in a comma separated list for Char fields.
+    Example:
+      - field=value       # filter by a single value
+      - field=val1,val2   # Filter by val1 OR val2  (Django's 'in' lookup)
+    """
+
+    def filter(self, qs, value):
+        if not value:
+            return qs
+
+        values = value.split(',')
+        if len(values) > 1:
+            self.lookup_expr = 'in'
+        else:
+            values = values[0]
+
+        return super(MultipleCharFilter, self).filter(qs, values)
+
+
 class ProductFilterset(django_filters.FilterSet):
     category = TreeNodeChoiceFilter(queryset=Category.objects.all(), field_name='category', required=True)
     price = django_filters.RangeFilter(field_name='price')
-    brand = django_filters.CharFilter(field_name="brand__slug", lookup_expr="icontains")
+    brand = MultipleCharFilter(field_name="brand__slug", lookup_expr="icontains")
     color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
                                                      queryset=Color.objects.all())
     size = django_filters.ModelMultipleChoiceFilter(field_name="leftovers__parent_size__title", to_field_name="title",
