@@ -54,7 +54,6 @@ admin.site.register(Tag, TagAdmin)
 
 class ProductAdmin(admin.ModelAdmin):
     filter_horizontal = ("image", 'leftovers', 'related_products', 'variants')
-    list_display = ('pk', 'title')
 
 
 admin.site.register(Product, ProductAdmin)
