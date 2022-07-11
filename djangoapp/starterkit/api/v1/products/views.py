@@ -11,7 +11,7 @@ from .models import Product, Category, Compilation, MainPage
 from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
     CompilationsViewSerializer, MainPageViewSerializer
 from rest_framework.permissions import AllowAny
-
+import rest_framework.filters as f
 from .services import ProductFilterset
 
 
@@ -36,6 +36,8 @@ class ProductsListApiView(ListAPIView):
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ProductFilterset
+    filter_backends = [f.SearchFilter]
+    search_fields = ['title', 'brand__title', 'color__title', 'description', ]
 
     def get_queryset(self):
         return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0).distinct()
