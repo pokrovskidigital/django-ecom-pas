@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
     'django.contrib.postgres',
     "corsheaders",
     'api.v1.products',
@@ -44,7 +45,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'mptt',
-    'drf_yasg',
 
 ]
 
@@ -151,4 +151,3 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files
 MEDIA_ROOT = os.path.join(os.path.dirname(os.path.dirname(BASE_DIR)), 'media')
 MEDIA_URL = '/media/'
-
