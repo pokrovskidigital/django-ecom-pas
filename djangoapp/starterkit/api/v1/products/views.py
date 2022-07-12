@@ -49,10 +49,7 @@ class ProductsSearchListApiView(ListAPIView):
     filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
     filterset_class = ProductSearchFilterSet
     search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
-
-    def get_queryset(self):
-        return Product.objects.all().distinct()
-
+    queryset = Product.objects.all()
 
 class ProductApiView(GenericAPIView):
     queryset = Product.objects.all()
