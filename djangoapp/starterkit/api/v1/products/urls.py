@@ -4,7 +4,7 @@ from django.urls import path
 from .models import Product
 from .views import ProductsSearchListApiView, CategoryListApiView, ProductApiView, OptionCategoryView, \
     CompilationListApiView, \
-    MainPageListApiView, ProductsListApiView, BrandListView
+    MainPageListApiView, ProductsListApiView, BrandListView, ProductsBrandListApiView
 
 urlpatterns = [
     path('search/products/', ProductsSearchListApiView.as_view()),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('<slug:sex__slug>/products/', ProductsListApiView.as_view()),
     path('<slug:sex__slug>/categories/', CategoryListApiView.as_view()),
     path('product/<int:pk>', ProductApiView.as_view()),
+    path('products/<slug:sex__slug>/<slug:brand__slug>', ProductsBrandListApiView.as_view()),
     path('<slug:sex__slug>/<int:category__id>/options', OptionCategoryView.as_view()),
     path('<slug:sex__slug>/compilations/', CompilationListApiView.as_view()),
     path('<slug:sex__slug>/main_page/', MainPageListApiView.as_view()),
