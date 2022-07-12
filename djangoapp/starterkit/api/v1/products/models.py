@@ -91,7 +91,7 @@ class Brand(models.Model):
     description = models.TextField(default='', max_length=1000, null=True, blank=True, )
     icon = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True, related_name='brand_icon')
     image = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True, related_name='brand_image')
-    sex = models.ForeignKey('Sex', on_delete=models.PROTECT, default=31, blank=True)
+    sex = models.ForeignKey('Sex', on_delete=models.PROTECT, null=True, blank=True)
 
     def __str__(self):
         return self.title + ' ' + self.id_1c
