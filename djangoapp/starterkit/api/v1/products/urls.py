@@ -7,11 +7,11 @@ from .views import ProductsSearchListApiView, CategoryListApiView, ProductApiVie
     MainPageListApiView, ProductsListApiView
 
 urlpatterns = [
+    path('search/products/', ProductsSearchListApiView.as_view()),
     path('<slug:sex__slug>/products/', ProductsListApiView.as_view()),
     path('<slug:sex__slug>/categories/', CategoryListApiView.as_view()),
     path('product/<int:pk>', ProductApiView.as_view()),
     path('<slug:sex__slug>/<int:category__id>/options', OptionCategoryView.as_view()),
     path('<slug:sex__slug>/compilations/', CompilationListApiView.as_view()),
     path('<slug:sex__slug>/main_page/', MainPageListApiView.as_view()),
-    path('search/products/', ProductsSearchListApiView.as_view()),
 ]
