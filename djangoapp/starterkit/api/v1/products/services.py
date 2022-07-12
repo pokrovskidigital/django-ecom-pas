@@ -38,6 +38,7 @@ class MultipleCharFilter(django_filters.CharFilter):
 
 
 class ProductFilterSet(django_filters.FilterSet):
+    category = TreeNodeChoiceFilter(queryset=Category.objects.all(), field_name='category', required=True)
     price = django_filters.RangeFilter(field_name='price')
     brand = MultipleCharFilter(field_name="brand__slug", lookup_expr="icontains")
     color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
@@ -51,7 +52,6 @@ class ProductFilterSet(django_filters.FilterSet):
 
 
 class ProductSearchFilterSet(django_filters.FilterSet):
-    category = TreeNodeChoiceFilter(queryset=Category.objects.all(), field_name='category', required=True)
     price = django_filters.RangeFilter(field_name='price')
     brand = MultipleCharFilter(field_name="brand__slug", lookup_expr="icontains")
     color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
