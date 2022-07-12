@@ -210,6 +210,7 @@ class Options(models.Model):
 class Compilation(models.Model):
     title = models.CharField(max_length=200, verbose_name="title")
     subtitle = models.CharField(max_length=200, verbose_name="subtitle")
+    slug = models.SlugField(max_length=250, unique=True, db_index=True, verbose_name="slug", default="-")
     sex = models.ForeignKey('Sex', on_delete=models.PROTECT, default=31, blank=True)
     text = models.TextField(max_length=1000, verbose_name="text")
     title_image = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True)
