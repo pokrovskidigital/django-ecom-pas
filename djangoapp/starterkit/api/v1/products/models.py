@@ -23,6 +23,9 @@ class Image(models.Model):
     title = models.CharField(max_length=200, verbose_name="title")
     type = models.CharField(max_length=200, choices=IMAGE_TYPES, default=IMAGE_TYPES[0])
 
+    def __str__(self):
+        return self.title
+
 
 class Category(MPTTModel):
     title = models.CharField(max_length=200, verbose_name="title")
@@ -88,6 +91,7 @@ class Brand(models.Model):
     description = models.TextField(default='', max_length=1000, null=True, blank=True, )
     icon = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True, related_name='brand_icon')
     image = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True, related_name='brand_image')
+    sex = models.ForeignKey('Sex', on_delete=models.PROTECT, default=31, blank=True)
 
     def __str__(self):
         return self.title + ' ' + self.id_1c
