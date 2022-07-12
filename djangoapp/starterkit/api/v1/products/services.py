@@ -1,7 +1,7 @@
 from mptt.forms import TreeNodeChoiceField
 import django_filters
 
-from .models import Product, Category, Color, Leftover, Size
+from .models import Product, Category, Color, Leftover, Size, Sex
 
 
 class TreeNodeChoiceFilter(django_filters.ModelChoiceFilter):
@@ -51,7 +51,9 @@ class ProductFilterSet(django_filters.FilterSet):
         fields = ('price', 'brand', 'color', 'size')
 
 
-class PFF(django_filters.FilterSet):
+class ProductSearchFilterSet(django_filters.FilterSet):
+    sex = django_filters.ModelMultipleChoiceFilter(field_name='sex__slug', to_field_name='slug',
+                                                   queryset=Sex.objects.all())
     price = django_filters.RangeFilter(field_name='price')
     brand = MultipleCharFilter(field_name="brand__slug", lookup_expr="icontains")
     color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
@@ -61,4 +63,4 @@ class PFF(django_filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ('price', 'brand', 'color', 'size')
+        fields = ('price', 'brand', 'color', 'size', 'sex')
