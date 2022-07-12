@@ -6,6 +6,7 @@ IMAGE_TYPES = (
     ('P', 'Products'),
     ('C', 'Category'),
     ('B', 'Brands'),
+    ('C', 'Compilation'),
 
 )
 
