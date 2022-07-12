@@ -4,10 +4,11 @@ from django.urls import path
 from .models import Product
 from .views import ProductsSearchListApiView, CategoryListApiView, ProductApiView, OptionCategoryView, \
     CompilationListApiView, \
-    MainPageListApiView, ProductsListApiView
+    MainPageListApiView, ProductsListApiView, BrandListView
 
 urlpatterns = [
     path('search/products/', ProductsSearchListApiView.as_view()),
+    path('brands/', BrandListView.as_view()),
     path('<slug:sex__slug>/products/', ProductsListApiView.as_view()),
     path('<slug:sex__slug>/categories/', CategoryListApiView.as_view()),
     path('product/<int:pk>', ProductApiView.as_view()),
