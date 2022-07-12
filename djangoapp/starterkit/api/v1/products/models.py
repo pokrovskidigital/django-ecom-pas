@@ -6,6 +6,7 @@ IMAGE_TYPES = (
     ('P', 'Products'),
     ('C', 'Category'),
     ('B', 'Brands'),
+    ('C', 'Compilation'),
 
 )
 
@@ -14,11 +15,11 @@ IMAGE_TYPES = (
 
 class Image(models.Model):
     image_s = models.ImageField(
-        upload_to=l_image_directory_path, null=True, blank=True, max_length=1200)
+        upload_to='/media/LARGE/', null=True, blank=True, max_length=1200)
     image_m = models.ImageField(
-        upload_to=l_image_directory_path, null=True, blank=True, max_length=1200)
+        upload_to='/media/MEDIUM/', null=True, blank=True, max_length=1200)
     image_l = models.ImageField(
-        upload_to=l_image_directory_path, null=True, blank=True, max_length=1200)
+        upload_to='/media/SMALL/', null=True, blank=True, max_length=1200)
     title = models.CharField(max_length=200, verbose_name="title")
     type = models.CharField(max_length=200, choices=IMAGE_TYPES, default=IMAGE_TYPES[0])
 
