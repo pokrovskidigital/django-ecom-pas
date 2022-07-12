@@ -13,5 +13,5 @@ urlpatterns = [
     path('<slug:sex__slug>/<int:category__id>/options', OptionCategoryView.as_view()),
     path('<slug:sex__slug>/compilations/', CompilationListApiView.as_view()),
     path('<slug:sex__slug>/main_page/', MainPageListApiView.as_view()),
-    path('products/search', ProductsListApiView.as_view()),
+    path('search/products', ProductsListApiView.as_view()),
 ]
