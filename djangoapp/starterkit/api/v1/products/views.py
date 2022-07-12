@@ -34,12 +34,25 @@ class ProductsListApiView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
-    filter_backends = (filters.DjangoFilterBackend,f.SearchFilter)
+    filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
     filterset_class = ProductFilterset
     search_fields = ['@title', '@brand__title', '@color__title', '@description', ]
 
     def get_queryset(self):
         return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0).distinct()
+
+
+class ProductsSearchListApiView(ListAPIView):
+    pagination_class = StandardResultsSetPagination
+    serializer_class = ProductsViewSerializer
+    permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
+    filterset_class = ProductFilterset
+    search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
+
+    def get_queryset(self):
+        return Product.objects.all().distinct()
+
 
 class ProductApiView(GenericAPIView):
     queryset = Product.objects.all()
