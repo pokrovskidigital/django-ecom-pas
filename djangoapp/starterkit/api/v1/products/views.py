@@ -12,7 +12,7 @@ from .serializers import ProductsViewSerializer, CategoriesViewSerializer, Produ
     CompilationsViewSerializer, MainPageViewSerializer
 from rest_framework.permissions import AllowAny
 import rest_framework.filters as f
-from .services import ProductFilterset
+from .services import ProductFilterSet, ProductSearchFilterSet
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -35,7 +35,7 @@ class ProductsListApiView(ListAPIView):
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
-    filterset_class = ProductFilterset
+    filterset_class = ProductFilterSet
     search_fields = ['@title', '@brand__title', '@color__title', '@description', ]
 
     def get_queryset(self):
@@ -47,7 +47,7 @@ class ProductsSearchListApiView(ListAPIView):
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
-    filterset_class = ProductFilterset
+    filterset_class = ProductSearchFilterSet
     search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
 
     def get_queryset(self):
