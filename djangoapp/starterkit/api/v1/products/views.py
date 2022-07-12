@@ -27,7 +27,7 @@ class CategoryListApiView(ListAPIView):
     permission_classes = (AllowAny,)
 
     def get_queryset(self):
-        return Category.objects.filter(sex__slug=self.kwargs['sex__slug'], product__isnull=False)
+        return Category.objects.filter(sex__slug=self.kwargs['sex__slug'], product__isnull=False).distinct()
 
 
 class ProductsListApiView(ListAPIView):
