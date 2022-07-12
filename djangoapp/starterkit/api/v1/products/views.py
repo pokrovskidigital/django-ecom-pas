@@ -120,4 +120,4 @@ class BrandListView(ListAPIView):
     serializer_class = BrandSerializer
 
     def get_queryset(self):
-        return Brand.objects.all().distinct()
+        return Brand.objects.filter(product__isnull=False).distinct()
