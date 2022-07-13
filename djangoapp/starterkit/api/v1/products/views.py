@@ -160,7 +160,7 @@ class BrandView(GenericAPIView):
     queryset = Brand.objects.all()
     serializer_class = BrandViewSerializer
     permission_classes = (AllowAny,)
-    lookup_field = ('slug',)
+    lookup_field = 'slug'
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
