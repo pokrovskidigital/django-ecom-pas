@@ -154,3 +154,29 @@ class BrandListView(ListAPIView):
 
     def get_queryset(self):
         return Brand.objects.filter(product__isnull=False).distinct()
+
+
+class BrandCategoryListView(ListAPIView):
+    pagination_class = None
+    permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    serializer_class = CategoriesViewSerializer
+
+    def get_queryset(self):
+        return Category.objects.filter(product__isnull=False,
+                                       product__brand__slug=self.kwargs['brand__slug']).distinct()
+
+
+class OptionBrandAllView(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, sex__slug, brand_slug):
+        options_dict = {'sizes': [], 'colors': [],
+                        'max_price': 0, 'min_price': 0, "brands": []}
+
+        try:
+            products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0, brand__slug=brand_slug)
+            options_dict = get_options(options_dict, products)
+        except:
+            pass
+        return Response(options_dict)
