@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 from .models import Product, Category, Compilation, MainPage, Brand
 from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
-    CompilationsViewSerializer, MainPageViewSerializer, BrandSerializer, BrandViewSerializer
+    CompilationsViewSerializer, MainPageViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer
 from rest_framework.permissions import AllowAny
 import rest_framework.filters as f
 from .services import ProductFilterSet, ProductSearchFilterSet
@@ -150,10 +150,22 @@ class BrandListView(ListAPIView):
     pagination_class = None
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
-    serializer_class = BrandViewSerializer
+    serializer_class = BrandListViewSerializer
 
     def get_queryset(self):
         return Brand.objects.filter(product__isnull=False).distinct()
+
+
+class BrandView(GenericAPIView):
+    queryset = Brand.objects.all()
+    serializer_class = BrandViewSerializer
+    permission_classes = (AllowAny,)
+    lookup_field = ['slug']
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class BrandCategoryListView(ListAPIView):

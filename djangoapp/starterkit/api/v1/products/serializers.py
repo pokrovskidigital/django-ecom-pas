@@ -130,11 +130,19 @@ class BrandSerializer(ModelSerializer):
         model = Brand
         fields = ("title",
                   )
+
+
+class BrandListViewSerializer(ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ("title", 'slug'
+                  )
+
+
 class BrandViewSerializer(ModelSerializer):
     class Meta:
         model = Brand
-        fields = ("title",'slug'
-                  )
+        fields = '__all__'
 
 
 class ImageViewSerializer(ModelSerializer):
