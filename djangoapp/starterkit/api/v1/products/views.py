@@ -170,12 +170,12 @@ class BrandCategoryListView(ListAPIView):
 class OptionBrandAllView(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request, sex__slug, brand_slug):
+    def get(self, request, sex__slug, brand__slug):
         options_dict = {'sizes': [], 'colors': [],
                         'max_price': 0, 'min_price': 0, "brands": []}
 
         try:
-            products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0, brand__slug=brand_slug)
+            products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0, brand__slug=brand__slug)
             options_dict = get_options(options_dict, products)
         except:
             pass
