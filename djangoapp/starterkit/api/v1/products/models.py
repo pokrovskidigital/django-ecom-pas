@@ -89,6 +89,7 @@ class Brand(models.Model):
     slug = models.SlugField(max_length=250, unique=True, db_index=True, verbose_name="slug", default="-")
     title = models.CharField(max_length=200, verbose_name="title", null=True, blank=True, )
     description = models.TextField(default='', max_length=1000, null=True, blank=True, )
+    short_description = models.TextField(default='', max_length=1000, null=True, blank=True, )
     icon = models.ImageField(
         upload_to='media/brand/icons/', null=True, blank=True, max_length=1200)
     image = models.ImageField(
