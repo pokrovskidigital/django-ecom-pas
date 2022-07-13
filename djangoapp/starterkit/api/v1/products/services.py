@@ -52,6 +52,8 @@ class ProductFilterSet(django_filters.FilterSet):
 
 
 class ProductSearchFilterSet(django_filters.FilterSet):
+    category = TreeNodeChoiceFilter(queryset=Category.objects.all(), field_name='category')
+
     sex = django_filters.ModelMultipleChoiceFilter(field_name='sex__slug', to_field_name='slug',
                                                    queryset=Sex.objects.all())
     price = django_filters.RangeFilter(field_name='price')
@@ -63,4 +65,4 @@ class ProductSearchFilterSet(django_filters.FilterSet):
 
     class Meta:
         model = Product
-        fields = ('price', 'brand', 'color', 'size', 'sex')
+        fields = ('price', 'brand', 'color', 'size', 'sex', 'category')
