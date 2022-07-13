@@ -90,7 +90,7 @@ class OptionCategoryView(APIView):
             category = Category.objects.get(pk=category__id)
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0,
                                               category__id__in=category.get_descendants(include_self=True))
-            options_dict = get_options(options_dict,products)
+            options_dict = get_options(options_dict, products)
         except:
             pass
         return Response(options_dict)
@@ -114,13 +114,13 @@ def get_options(options_dict, products):
 class OptionAllView(APIView):
     permission_classes = (AllowAny,)
 
-    def get(self, request, sex__slug, category__id):
+    def get(self, request, sex__slug):
         options_dict = {'sizes': [], 'colors': [],
                         'max_price': 0, 'min_price': 0, "brands": []}
 
         try:
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
-            options_dict = get_options(options_dict,products)
+            options_dict = get_options(options_dict, products)
         except:
             pass
         return Response(options_dict)
