@@ -90,17 +90,37 @@ class OptionCategoryView(APIView):
             category = Category.objects.get(pk=category__id)
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0,
                                               category__id__in=category.get_descendants(include_self=True))
-            for color in products.values_list('color__title', 'color__code_1c').distinct():
-                if color not in options_dict['colors'] and color[0] is not None:
-                    options_dict['colors'].append(color)
-            for size in products.values_list('leftovers__parent_size__title').distinct():
-                if size not in options_dict['sizes']:
-                    options_dict['sizes'].append(size)
-            for brand in products.values_list('brand__title', 'brand__slug').distinct():
-                if brand not in options_dict['brands']:
-                    options_dict['brands'].append(brand)
-            options_dict['min_price'] = products.order_by('-price').first().price
-            options_dict['max_price'] = products.order_by('price').first().price
+            options_dict = get_options(options_dict,products)
+        except:
+            pass
+        return Response(options_dict)
+
+
+def get_options(options_dict, products):
+    for color in products.values_list('color__title', 'color__code_1c').distinct():
+        if color not in options_dict['colors'] and color[0] is not None:
+            options_dict['colors'].append(color)
+    for size in products.values_list('leftovers__parent_size__title').distinct():
+        if size not in options_dict['sizes']:
+            options_dict['sizes'].append(size)
+    for brand in products.values_list('brand__title', 'brand__slug').distinct():
+        if brand not in options_dict['brands']:
+            options_dict['brands'].append(brand)
+    options_dict['min_price'] = products.order_by('-price').first().price
+    options_dict['max_price'] = products.order_by('price').first().price
+    return options_dict
+
+
+class OptionAllView(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, sex__slug, category__id):
+        options_dict = {'sizes': [], 'colors': [],
+                        'max_price': 0, 'min_price': 0, "brands": []}
+
+        try:
+            products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
+            options_dict = get_options(options_dict,products)
         except:
             pass
         return Response(options_dict)
