@@ -47,11 +47,14 @@ class ProductsSearchListApiView(ListAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
-    filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
+    # filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
+    filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ProductSearchFilterSet
-    search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
+    # search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
 
     def get_queryset(self):
+        if self.kwargs['search']:
+            print('FindKWARGSEARCH')
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 
 
