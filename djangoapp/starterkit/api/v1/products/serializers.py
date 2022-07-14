@@ -198,7 +198,7 @@ class VariantsSerializer(ModelSerializer):
 
 class ProductViewSerializer(ModelSerializer):
     category = CategorySerializer()
-    brand = BrandSerializer()
+    brand = BrandListViewSerializer()
     image = ImageViewSerializer(many=True)
     leftovers = LeftoverViewSerializer(many=True)
     sex = SexSerializer()
