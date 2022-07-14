@@ -62,7 +62,7 @@ class ProductsSearchListApiView(ListAPIView):
                 leftovers__count__gt=0,
                 leftovers__price__gt=0).annotate(
                 similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
-                similarity__gt=0.3).order_by('-similarity').distinct()
+                similarity__gt=0.5).order_by('-similarity').distinct()
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 
 
