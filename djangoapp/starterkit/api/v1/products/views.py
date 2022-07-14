@@ -150,6 +150,7 @@ class CompilationApiView(GenericAPIView):
     queryset = Compilation.objects.all()
     serializer_class = ProductViewSerializer
     permission_classes = (AllowAny,)
+    lookup_field = 'slug'
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()

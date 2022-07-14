@@ -9,7 +9,7 @@ from .views import ProductsSearchListApiView, CategoryListApiView, ProductApiVie
 
 urlpatterns = [
     path('search/products/', ProductsSearchListApiView.as_view()),
-    path('compilations/<int:pk>', CompilationApiView.as_view()),
+    path('compilations/<slug:slug>', CompilationApiView.as_view()),
     path('brands/', BrandListView.as_view()),
     path('brands/options/<slug:sex__slug>/<slug:brand__slug>/', OptionBrandAllView.as_view()),
     path('brands/<slug:slug>/', BrandView.as_view()),
