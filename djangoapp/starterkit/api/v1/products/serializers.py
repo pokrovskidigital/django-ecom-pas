@@ -135,7 +135,7 @@ class BrandSerializer(ModelSerializer):
 class BrandListViewSerializer(ModelSerializer):
     class Meta:
         model = Brand
-        fields = ("title", 'slug', 'image'
+        fields = ("title", 'slug', 'icon'
                   )
 
 
