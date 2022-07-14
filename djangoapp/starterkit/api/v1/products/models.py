@@ -95,6 +95,7 @@ class Brand(models.Model):
     image = models.ImageField(
         upload_to='media/brand/image/', null=True, blank=True, max_length=1200)
     sex = models.ForeignKey('Sex', on_delete=models.PROTECT, null=True, blank=True)
+    simular_words = models.TextField(default='', max_length=1000, null=True, blank=True, )
 
     def __str__(self):
         return self.title + ' ' + self.id_1c
