@@ -53,7 +53,8 @@ class ProductsSearchListApiView(ListAPIView):
     # search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
 
     def get_queryset(self):
-        print(self.request.query_params)
+        if 'search' in self.request.query_params.keys():
+            print('search')
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 
 
