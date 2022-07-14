@@ -61,7 +61,7 @@ class Leftover(models.Model):
 class Sex(models.Model):
     slug = models.SlugField(max_length=250, unique=False, db_index=True, verbose_name="slug", default="-")
     title = models.CharField(max_length=200, verbose_name="title")
-
+    simular_words = models.TextField(default='', max_length=1000, null=True, blank=True, )
     def __str__(self):
         return self.title
 
