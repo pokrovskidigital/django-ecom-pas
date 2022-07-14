@@ -69,6 +69,7 @@ admin.site.register(Leftover, LeftoverAdmin)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ['title', 'id_1c']
     ordering = ['id_1c']
+    search_fields = ['title', 'id_1c', 'slug']
 
 
 admin.site.register(Brand, BrandAdmin)
