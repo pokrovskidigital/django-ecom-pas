@@ -148,7 +148,7 @@ class CompilationListApiView(ListAPIView):
 
 class CompilationApiView(GenericAPIView):
     queryset = Compilation.objects.all()
-    serializer_class = ProductViewSerializer
+    serializer_class = CompilationsViewSerializer
     permission_classes = (AllowAny,)
     lookup_field = 'slug'
 
