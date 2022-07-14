@@ -146,6 +146,17 @@ class CompilationListApiView(ListAPIView):
         return Compilation.objects.filter(sex__slug=self.kwargs['sex__slug']).distinct()
 
 
+class CompilationApiView(GenericAPIView):
+    queryset = Compilation.objects.all()
+    serializer_class = ProductViewSerializer
+    permission_classes = (AllowAny,)
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
 class MainPageListApiView(ListAPIView):
     pagination_class = None
     serializer_class = MainPageViewSerializer
