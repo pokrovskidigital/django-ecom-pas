@@ -1,3 +1,4 @@
+from django.contrib.postgres.search import TrigramWordSimilarity
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.views import APIView
@@ -50,11 +51,17 @@ class ProductsSearchListApiView(ListAPIView):
     # filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ProductSearchFilterSet
+
     # search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
 
     def get_queryset(self):
         if 'search' in self.request.query_params.keys():
             print('search')
+            return Product.objects.filter(
+                leftovers__count__gt=0,
+                leftovers__price__gt=0).annotate(
+                similarity=TrigramWordSimilarity(self.request.query_params['search'], 'title')).filter(
+                similarity__gt=0.3).order_by('-similarity')
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 
 
@@ -67,7 +74,6 @@ class ProductsBrandListApiView(ListAPIView):
     search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
 
     def get_queryset(self):
-
         return Product.objects.filter(brand__slug=self.kwargs['brand__slug'], sex__slug=self.kwargs['sex__slug'],
                                       leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 
