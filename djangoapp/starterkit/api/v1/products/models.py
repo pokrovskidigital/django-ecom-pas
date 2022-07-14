@@ -160,25 +160,96 @@ class Product(models.Model):
     brand = models.ForeignKey('Brand', on_delete=models.PROTECT, null=True, blank=True, )
     collection = models.CharField(max_length=200, verbose_name="collection", blank=True, null=True)
     fashion_collection = models.CharField(max_length=200, verbose_name="fashion_collection", blank=True, null=True)
-    season = models.ForeignKey('Season', on_delete=models.PROTECT, null=True, blank=True, related_name="product")
-    color = models.ForeignKey('Color', on_delete=models.PROTECT, null=True, blank=True, related_name="product")
-    price = models.FloatField(default=0)
-    discount = models.IntegerField(default=0)
-    related_products = models.ManyToManyField('self')
-    similar_products = models.ManyToManyField('self')
-    variants = models.ManyToManyField('self', null=True, blank=True)
-    sort = models.IntegerField(default=0)
-    id_1c = models.CharField(max_length=200, unique=False)
-    time_create = models.DateTimeField(auto_now_add=True, verbose_name='Create time ')
-    update_by_1c_time = models.DateTimeField(auto_now=True, verbose_name='Update Time')
-    detailed_description = models.TextField(default='', max_length=2000)
-    weight = models.CharField(max_length=200, verbose_name="weight", null=True, blank=True)
-    width = models.CharField(max_length=200, verbose_name="width", null=True, blank=True)
-    height = models.CharField(max_length=200, verbose_name="height", null=True, blank=True)
-    volume = models.CharField(max_length=200, verbose_name="volume", null=True, blank=True)
-    popularity = models.IntegerField(default=0)
-    labels = models.ManyToManyField('Labels', null=True, blank=True)
-    options = models.ManyToManyField('Options', null=True, blank=True)
+    season = models.ForeignKey(
+        'Season',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="product"
+    )
+    color = models.ForeignKey(
+        'Color',
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        related_name="product"
+    )
+    price = models.FloatField(
+        default=0
+    )
+    discount = models.IntegerField(
+        default=0
+    )
+    related_products = models.ManyToManyField(
+        'self'
+    )
+    similar_products = models.ManyToManyField(
+        'self'
+    )
+    variants = models.ManyToManyField(
+        'self',
+        null=True,
+        blank=True
+    )
+    sort = models.IntegerField(
+        default=0
+    )
+    id_1c = models.CharField(
+        max_length=200,
+        unique=False
+    )
+    time_create = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Create time '
+    )
+    update_by_1c_time = models.DateTimeField(
+        auto_now=True,
+        verbose_name='Update Time'
+    )
+    detailed_description = models.TextField(
+        default='',
+        max_length=2000
+    )
+    weight = models.CharField(
+        max_length=200,
+        verbose_name="weight",
+        null=True,
+        blank=True
+    )
+    width = models.CharField(
+        max_length=200,
+        verbose_name="width",
+        null=True,
+        blank=True
+    )
+    height = models.CharField(
+        max_length=200,
+        verbose_name="height",
+        null=True,
+        blank=True
+    )
+    volume = models.CharField(
+        max_length=200,
+        verbose_name="volume",
+        null=True, blank=True
+    )
+    popularity = models.IntegerField(
+        default=0
+    )
+    labels = models.ManyToManyField(
+        'Labels',
+        null=True,
+        blank=True
+    )
+    options = models.ManyToManyField(
+        'Options',
+        null=True,
+        blank=True
+    )
+    search_string = models.TextField(
+        default='',
+        max_length=1000
+    )
 
     @property
     def discount_price(self):
