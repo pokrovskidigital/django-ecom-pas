@@ -193,7 +193,7 @@ class CompilationApiView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
-        old_prods = instance.products.objects.all()
+        old_prods = instance.products.all()
         instance.products.clear()
         print(self.filter_queryset(old_prods))
         instance.products.add(*self.filter_queryset(old_prods))
