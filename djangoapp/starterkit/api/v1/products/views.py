@@ -69,6 +69,10 @@ class ProductsSearchListApiView(GenericAPIView):
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
 
+    def post(self):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
     def get_queryset(self):
         print(self.request.data)
@@ -80,11 +84,6 @@ class ProductsSearchListApiView(GenericAPIView):
                 similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
                 similarity__gt=0.5, ).order_by('-similarity').distinct()
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
-
-    def post(self):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
 
 
 class ProductsBrandListApiView(ListAPIView):
