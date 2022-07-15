@@ -197,6 +197,8 @@ class CompilationApiView(GenericAPIView):
         print(self.filter_queryset(old_prods))
         instance.products.add(*self.filter_queryset(old_prods))
         serializer = self.get_serializer(instance)
+        instance.products.add(*old_prods)
+
         return Response(serializer.data)
 
 
