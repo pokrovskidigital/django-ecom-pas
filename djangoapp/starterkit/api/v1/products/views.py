@@ -69,7 +69,7 @@ class ProductsSearchListApiView(APIView):
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
 
-    def post(self, request):
+    def post(self, request, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
