@@ -1,6 +1,6 @@
 from django.contrib.postgres.search import TrigramWordSimilarity, TrigramWordDistance
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, GenericAPIView, get_object_or_404
 from rest_framework.views import APIView
 from rest_framework import mixins
 
@@ -45,26 +45,6 @@ class ProductsListApiView(ListAPIView):
                                       leftovers__price__gt=0).distinct()
 
 
-# class ProductsSearchListApiView(ListAPIView):
-#     pagination_class = StandardResultsSetPagination
-#     serializer_class = ProductsViewSerializer
-#     permission_classes = (AllowAny,)
-#     # filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
-#     filter_backends = (filters.DjangoFilterBackend,)
-#     filterset_class = ProductSearchFilterSet
-#
-#     # search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
-#
-#     def get_queryset(self):
-#         print(self.request.data)
-#         if 'search' in self.request.data.keys():
-#             print('search')
-#             return Product.objects.filter(
-#                 leftovers__count__gt=0,
-#                 leftovers__price__gt=0).annotate(
-#                 similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
-#                 similarity__gt=0.5,).order_by('-similarity').distinct()
-#         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer
@@ -182,9 +162,32 @@ class CompilationApiView(GenericAPIView):
     serializer_class = CompilationsViewSerializer
     permission_classes = (AllowAny,)
     lookup_field = 'slug'
+    filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
+    filterset_class = ProductSearchFilterSet
+
+    def get_object(self):
+        queryset = self.get_queryset()
+
+        lookup_url_kwarg = self.lookup_url_kwarg or self.lookup_field
+
+        assert lookup_url_kwarg in self.kwargs, (
+                'Expected view %s to be called with a URL keyword argument '
+                'named "%s". Fix your URL conf, or set the `.lookup_field` '
+                'attribute on the view correctly.' %
+                (self.__class__.__name__, lookup_url_kwarg)
+        )
+
+        filter_kwargs = {self.lookup_field: self.kwargs[lookup_url_kwarg]}
+        obj = get_object_or_404(queryset, **filter_kwargs)
+
+        # May raise a permission denied
+        self.check_object_permissions(self.request, obj)
+
+        return obj
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
+        instance.products = self.filter_queryset(instance.products)
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
