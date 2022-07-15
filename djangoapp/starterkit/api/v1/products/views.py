@@ -68,11 +68,7 @@ class ProductsSearchListApiView(GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
-    # filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
-    filter_backends = (filters.DjangoFilterBackend,)
-    filterset_class = ProductSearchFilterSet
 
-    # search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
 
     def get_queryset(self):
         print(self.request.data)
