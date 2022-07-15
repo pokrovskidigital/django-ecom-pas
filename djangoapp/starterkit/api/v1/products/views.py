@@ -187,7 +187,7 @@ class CompilationApiView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
-        instance.products.add(**self.filter_queryset(instance.products))
+        instance.products.add(*self.filter_queryset(instance.products))
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
 
