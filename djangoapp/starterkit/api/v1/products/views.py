@@ -162,7 +162,7 @@ class CompilationApiView(GenericAPIView):
     serializer_class = CompilationsViewSerializer
     permission_classes = (AllowAny,)
     lookup_field = 'slug'
-    filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
+    filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = ProductSearchFilterSet
 
     def get_object(self):
@@ -184,6 +184,12 @@ class CompilationApiView(GenericAPIView):
         self.check_object_permissions(self.request, obj)
 
         return obj
+
+    def filter_queryset(self, queryset):
+        print(queryset)
+        for backend in list(self.filter_backends):
+            queryset = backend().filter_queryset(self.request, queryset, self)
+        return queryset
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
