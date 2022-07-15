@@ -64,7 +64,7 @@ class ProductsListApiView(ListAPIView):
 #                 similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
 #                 similarity__gt=0.5,).order_by('-similarity').distinct()
 #         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
-class ProductsSearchListApiView(APIView):
+class ProductsSearchListApiView(GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
