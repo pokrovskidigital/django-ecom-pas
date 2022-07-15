@@ -199,7 +199,7 @@ class CompilationApiView(GenericAPIView):
         instance.products.add(*self.filter_queryset(old_prods))
         serializer = self.get_serializer(instance)
         instance.products.add(*old_prods)
-        instance.save()
+        instance.products.save()
         return Response(serializer.data)
 
 
