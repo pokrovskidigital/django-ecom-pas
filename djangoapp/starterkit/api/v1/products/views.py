@@ -2,6 +2,7 @@ from django.contrib.postgres.search import TrigramWordSimilarity
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.views import APIView
+from rest_framework import mixins
 
 # Create your views here.
 from rest_framework.pagination import PageNumberPagination
@@ -64,16 +65,13 @@ class ProductsListApiView(ListAPIView):
 #                 similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
 #                 similarity__gt=0.5,).order_by('-similarity').distinct()
 #         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
-class ProductsSearchListApiView(GenericAPIView):
+class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
-    lookup_field = 'search'
 
     def post(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+        return self.list(request)
 
     def get_queryset(self):
         print(self.request.data)
