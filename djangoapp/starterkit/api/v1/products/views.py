@@ -68,7 +68,7 @@ class ProductsSearchListApiView(GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
-
+    lookup_field = None
     def post(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
