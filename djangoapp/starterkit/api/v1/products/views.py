@@ -186,7 +186,6 @@ class CompilationApiView(GenericAPIView):
         return obj
 
     def filter_queryset(self, queryset):
-        print(queryset)
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
         return queryset
@@ -194,7 +193,7 @@ class CompilationApiView(GenericAPIView):
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
         old_prods = instance.products.all()
-        instance.products.remove()
+        instance.products.all.remove()
         print(self.filter_queryset(old_prods))
         instance.products.add(*self.filter_queryset(old_prods))
         serializer = self.get_serializer(instance)
