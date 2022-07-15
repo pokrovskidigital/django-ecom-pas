@@ -1,4 +1,4 @@
-from django.contrib.postgres.search import TrigramWordSimilarity
+from django.contrib.postgres.search import TrigramWordSimilarity, TrigramWordDistance
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView, GenericAPIView
 from rest_framework.views import APIView
@@ -91,8 +91,9 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
             return Product.objects.filter(
                 leftovers__count__gt=0,
                 leftovers__price__gt=0).annotate(
-                similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
-                similarity__gt=0.5, ).order_by('-similarity').distinct()
+                similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).annotate(
+                distance=TrigramWordDistance(self.request.data['search'], 'search_string')).filter(
+                similarity__gt=0.5, distance__lte=0.5).order_by('-similarity').distinct()
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 
 
