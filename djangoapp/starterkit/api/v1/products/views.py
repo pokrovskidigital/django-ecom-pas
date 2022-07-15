@@ -196,7 +196,7 @@ class CompilationApiView(GenericAPIView):
         ser_prods = ProductViewSerializer(self.filter_queryset(instance.products.all()), many=True)
         serializer = self.get_serializer(instance)
         ser_data = serializer.data
-        ser_data['products'] = ser_prods.data
+        ser_data['products'] = []
         return Response(serializer.data)
 
 
