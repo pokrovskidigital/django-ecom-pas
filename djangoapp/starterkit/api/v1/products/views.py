@@ -188,6 +188,7 @@ class CompilationApiView(GenericAPIView):
     def filter_queryset(self, queryset):
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
+        print(queryset)
         return queryset
 
     def get(self, request, *args, **kwargs):
