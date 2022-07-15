@@ -44,7 +44,27 @@ class ProductsListApiView(ListAPIView):
                                       leftovers__price__gt=0).distinct()
 
 
-class ProductsSearchListApiView(ListAPIView):
+# class ProductsSearchListApiView(ListAPIView):
+#     pagination_class = StandardResultsSetPagination
+#     serializer_class = ProductsViewSerializer
+#     permission_classes = (AllowAny,)
+#     # filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
+#     filter_backends = (filters.DjangoFilterBackend,)
+#     filterset_class = ProductSearchFilterSet
+#
+#     # search_fields = ['@title', '@brand__title', '@color__title', '@description', '@sku']
+#
+#     def get_queryset(self):
+#         print(self.request.data)
+#         if 'search' in self.request.data.keys():
+#             print('search')
+#             return Product.objects.filter(
+#                 leftovers__count__gt=0,
+#                 leftovers__price__gt=0).annotate(
+#                 similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
+#                 similarity__gt=0.5,).order_by('-similarity').distinct()
+#         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
+class ProductsSearchListApiView(GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
@@ -62,8 +82,13 @@ class ProductsSearchListApiView(ListAPIView):
                 leftovers__count__gt=0,
                 leftovers__price__gt=0).annotate(
                 similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
-                similarity__gt=0.5).order_by('-similarity').distinct()
+                similarity__gt=0.5, ).order_by('-similarity').distinct()
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
+
+    def post(self):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
 
 
 class ProductsBrandListApiView(ListAPIView):
