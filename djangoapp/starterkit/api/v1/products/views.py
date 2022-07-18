@@ -81,7 +81,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
                 prods = Product.objects.filter(
                     leftovers__count__gt=0,
                     leftovers__price__gt=0).annotate(
-                    similarity=TrigramWordSimilarity(search_query_word, 'search_string')).filter(
+                    similarity=TrigramWordSimilarity(self.request.data['search'], 'search_string')).filter(
                     similarity__gt=0.3).order_by('-similarity').distinct()
             return prods
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
