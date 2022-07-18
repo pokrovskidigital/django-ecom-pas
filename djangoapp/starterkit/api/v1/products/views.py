@@ -52,7 +52,6 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
 
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
-        print(queryset)
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
@@ -65,9 +64,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         return self.list(request)
 
     def get_queryset(self):
-        print(self.request.data)
         if 'search' in self.request.data.keys():
-            print('search')
             prods = Product.objects.all()
             for search_query_word in self.request.data['search'].split(' '):
                 prods = prods.filter(
@@ -75,7 +72,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
                     leftovers__price__gt=0).annotate(
                     similarity=TrigramWordSimilarity(search_query_word, 'search_string')).filter(
                     similarity__gt=0.3).order_by('-similarity').distinct()
-
+            return prods
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 
 
