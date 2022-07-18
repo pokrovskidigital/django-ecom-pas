@@ -182,10 +182,14 @@ class Product(models.Model):
         default=0
     )
     related_products = models.ManyToManyField(
-        'self'
+        'self',
+        null=True,
+        blank=True
     )
     similar_products = models.ManyToManyField(
-        'self'
+        'self',
+        null=True,
+        blank=True
     )
     variants = models.ManyToManyField(
         'self',
