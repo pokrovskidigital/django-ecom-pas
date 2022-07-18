@@ -67,6 +67,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         if 'search' in self.request.data.keys():
             prods = Product.objects.all()
             for search_query_word in self.request.data['search'].split(' '):
+                print(search_query_word)
                 prods = prods.filter(
                     leftovers__count__gt=0,
                     leftovers__price__gt=0).annotate(
