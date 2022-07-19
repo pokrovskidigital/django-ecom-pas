@@ -1,4 +1,4 @@
-import models
+import api.v1.products.models as models
 
 def create_recomendations():
     prods = models.Product.objects.all()
