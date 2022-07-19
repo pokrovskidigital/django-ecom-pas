@@ -44,7 +44,8 @@ class ProductsListApiView(ListAPIView):
         print(self.request.query_params)
         if "sort_by" in self.request.query_params.keys():
             return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0,
-                                          leftovers__price__gt=0).order_by(self.request.query_params['sort_by']).distinct()
+                                          leftovers__price__gt=0).order_by(
+                self.request.query_params['sort_by']).distinct()
         return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0,
                                       leftovers__price__gt=0).distinct()
 
@@ -261,3 +262,16 @@ class OptionBrandAllView(APIView):
         except:
             pass
         return Response(options_dict)
+
+
+class ProductByIdView(mixins.ListModelMixin, GenericAPIView):
+    pagination_class = StandardResultsSetPagination
+    serializer_class = ProductsViewSerializer
+    permission_classes = (AllowAny,)
+
+    def post(self, request, *args, **kwargs):
+        return self.list(request)
+
+    def get_queryset(self):
+        return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0,
+                                      pk__in=self.request.data['id_list']).distinct()
