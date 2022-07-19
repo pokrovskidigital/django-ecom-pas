@@ -9,6 +9,7 @@ def create_recomendations():
                                       category=prod.category)
         for pp in prod.similar_products.all():
             prod.similar_products.remove(pp)
+        prod.save()
         print(*(recom_products[:5].values_list('pk')))
         for p in recom_products[:5].values_list('pk'):
             try:

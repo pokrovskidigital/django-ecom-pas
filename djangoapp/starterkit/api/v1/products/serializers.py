@@ -196,35 +196,36 @@ class VariantsSerializer(ModelSerializer):
         fields = ('pk', "color", 'title', 'slug', 'image')
 
 
-class ProductViewSerializer(ModelSerializer):
-    category = CategorySerializer()
-    brand = BrandListViewSerializer()
-    image = ImageViewSerializer(many=True)
-    leftovers = LeftoverViewSerializer(many=True)
-    sex = SexSerializer()
-    color = ColorViewSerializer()
-    variants = VariantsSerializer(many=True)
-
-    class Meta:
-        model = Product
-        fields = (
-            'id', 'slug', 'title', 'price', 'brand', 'image', 'leftovers', 'color', 'sex', 'category', 'variants',
-            'sku',
-            'description')
-
-
 class ProductsViewSerializer(ModelSerializer):
     # category = CategorySeriazlizer()
     brand = BrandSerializer()
     image = ImageViewSerializer(many=True)
     # size_title = serializers.CharField(read_only=True, source='leftovers.parent_size.title')
     leftovers = LeftoverViewSerializer(many=True)
-
     sex = SexSerializer()
 
     class Meta:
         model = Product
         fields = ('id', 'slug', 'title', 'price', 'brand', 'image', 'leftovers', 'description', 'sex', 'search_string')
+
+
+class ProductViewSerializer(ModelSerializer):
+    category = CategorySerializer()
+    brand = BrandListViewSerializer()
+    image = ImageViewSerializer(many=True)
+    leftovers = LeftoverViewSerializer(many=True)
+    sex = SexSerializer()
+    similar_products = ProductsViewSerializer(many=True)
+
+    color = ColorViewSerializer()
+    variants = VariantsSerializer(many=True)
+
+    class Meta:
+        model = Product
+        fields = (
+            'id', 'slug', 'title', 'price', 'brand',
+            'image', 'leftovers', 'color', 'sex', 'category',
+            'variants', 'sku', 'description', 'similar_products')
 
 
 class CompilationsViewSerializer(ModelSerializer):
