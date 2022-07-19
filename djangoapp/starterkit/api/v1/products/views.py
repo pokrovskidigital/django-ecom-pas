@@ -1,3 +1,5 @@
+import re
+
 from django.contrib.postgres.search import TrigramWordSimilarity, TrigramWordDistance
 from django.shortcuts import render
 from rest_framework.generics import ListAPIView, GenericAPIView, get_object_or_404
@@ -72,8 +74,11 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         if 'search' in self.request.data.keys():
             prods = Product.objects.all()
             k = 0.5
-
-            for search_query_word in self.request.data['search'].split(' '):
+            query_string = self.request.data['search']
+            query_string = re.sub(r'[ без | в | для | за | из | к | между | на | по | при | с | у | под ]', "",
+            query_string)
+            print(query_string)
+            for search_query_word in query_string.split(' '):
                 print(search_query_word)
                 prods = prods.filter(
                     leftovers__count__gt=0,
