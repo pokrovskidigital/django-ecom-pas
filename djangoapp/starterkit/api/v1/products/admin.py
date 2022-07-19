@@ -53,7 +53,7 @@ admin.site.register(Tag, TagAdmin)
 
 
 class ProductAdmin(admin.ModelAdmin):
-    filter_horizontal = ("image", 'leftovers', 'related_products', 'variants')
+    filter_horizontal = ("image", 'leftovers','similar_products', 'related_products', 'variants')
     search_fields = ['title', 'sku', 'slug']
 
 
