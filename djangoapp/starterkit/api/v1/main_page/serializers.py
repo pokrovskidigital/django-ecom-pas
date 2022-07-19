@@ -1,6 +1,6 @@
 from ..products.serializers import CategoriesMenuSerializer, BrandMenuSerializer, SexSerializer, \
     CompilationsViewSerializer, ProductsViewSerializer
-from .models import Column, Menu, PromoBanner, Row, MainPage, Slider, Slide, ProductBlock
+from .models import Column, Menu, PromoBanner, Row, MainPage, Slider, Slide, ProductBlock, MobileShopping
 
 from rest_framework import serializers
 
@@ -34,6 +34,12 @@ class SlideSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class MobileShoppingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MobileShopping
+        fields = '__all__'
+
+
 class SliderSerializer(serializers.ModelSerializer):
     slides = SlideSerializer(many=True)
 
@@ -64,6 +70,7 @@ class MainPageViewSerializer(serializers.ModelSerializer):
     compilations = CompilationsViewSerializer(many=True)
     slider = SliderSerializer()
     product_blocks = ProductBlockSerializer(many=True)
+    mobile_shopping_parts = MobileShoppingSerializer(many=True)
 
     class Meta:
         model = MainPage

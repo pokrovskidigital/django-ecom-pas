@@ -78,11 +78,19 @@ class ProductBlock(models.Model):
         return self.heading
 
 
+class MobileShopping(models.Model):
+    heading = models.CharField(max_length=200, default='-')
+    image = models.FileField(upload_to="media/main_page/img/", blank=True, null=True)
+    link = models.URLField(max_length=200, default='-')
+    sort_id = models.PositiveIntegerField(default=0)
+
+
 class MainPage(models.Model):
     compilations = models.ManyToManyField(Compilation, related_name='MainMenu')
     sex = models.ForeignKey(Sex, on_delete=models.PROTECT, null=True, blank=True)
     slider = models.ForeignKey('Slider', on_delete=models.PROTECT, null=True, blank=True)
     product_blocks = models.ManyToManyField('ProductBlock', blank=True, related_name='MainMenu')
+    mobile_shopping_parts = models.ManyToManyField('MobileShopping', blank=True, related_name='MainMenu')
 
     def __str__(self):
         return self.sex.title

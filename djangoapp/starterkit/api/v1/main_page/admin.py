@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Menu, Column, PromoBanner, Row, Slider, Slide, MainPage, ProductBlock
+from .models import Menu, Column, PromoBanner, Row, Slider, Slide, MainPage, ProductBlock, MobileShopping
 
 
 # Register your models here.
@@ -27,6 +27,14 @@ class ProductBlockAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ProductBlock, ProductBlockAdmin)
+
+
+class MobileShoppingAdmin(admin.ModelAdmin):
+    list_display = ['heading', 'pk']
+    ordering = ['pk']
+
+
+admin.site.register(MobileShopping, MobileShoppingAdmin)
 
 
 class RowAdmin(admin.ModelAdmin):
