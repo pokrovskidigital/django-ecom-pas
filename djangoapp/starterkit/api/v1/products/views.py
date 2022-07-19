@@ -71,7 +71,8 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
     def get_queryset(self):
         if 'search' in self.request.data.keys():
             prods = Product.objects.all()
-            k = 0.7
+            k = 0.5
+
             for search_query_word in self.request.data['search'].split(' '):
                 print(search_query_word)
                 prods = prods.filter(
