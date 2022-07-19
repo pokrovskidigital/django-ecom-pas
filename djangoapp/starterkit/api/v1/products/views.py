@@ -42,6 +42,9 @@ class ProductsListApiView(ListAPIView):
 
     def get_queryset(self):
         print(self.request.query_params)
+        if "sort_by" in self.request.query_params.keys():
+            return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0,
+                                          leftovers__price__gt=0).order_by(self.request.query_params['sort_by']).distinct()
         return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0,
                                       leftovers__price__gt=0).distinct()
 
