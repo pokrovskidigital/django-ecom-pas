@@ -1,4 +1,4 @@
-from djangoapp.starterkit.api.v1.products.models import Product
+from .models import Product
 
 
 def brand_image_directory_path(instance, filename):
