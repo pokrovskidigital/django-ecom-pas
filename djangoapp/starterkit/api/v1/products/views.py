@@ -41,6 +41,7 @@ class ProductsListApiView(ListAPIView):
     search_fields = ['@title', '@brand__title', '@color__title', '@description', ]
 
     def get_queryset(self):
+        print(self.request.query_params)
         return Product.objects.filter(sex__slug=self.kwargs['sex__slug'], leftovers__count__gt=0,
                                       leftovers__price__gt=0).distinct()
 
