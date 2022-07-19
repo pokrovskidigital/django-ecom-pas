@@ -1,8 +1,7 @@
-from api.v1.products.models import Product
-
+import models
 
 def create_recomendations():
-    prods = Product.objects.all()
+    prods = models.Product.objects.all()
     for prod in prods:
         recom_products = prods.filter(price__gt=(prod.price - prod.price * 0.3),
                                       price__lt=(prod.price + prod.price * 0.3),
