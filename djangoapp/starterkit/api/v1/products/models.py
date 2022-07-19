@@ -1,6 +1,5 @@
 from django.db import models
 from mptt.models import MPTTModel, TreeForeignKey, TreeManyToManyField
-from .utils import l_image_directory_path, m_image_directory_path, s_image_directory_path
 
 IMAGE_TYPES = (
     ('P', 'Products'),
