@@ -149,7 +149,7 @@ def get_options(options_dict, products):
     for brand in products.values_list('brand__title', 'brand__slug').distinct():
         if brand not in options_dict['brands']:
             options_dict['brands'].append(brand)
-    cats = products.values_list('category_pk')
+    cats = products.values_list('category__pk')
     print(cats)
     options_dict['min_price'] = products.order_by('-price').first().price
     options_dict['max_price'] = products.order_by('price').first().price
@@ -216,7 +216,7 @@ class CompilationApiView(GenericAPIView):
         return queryset
 
     def paginate_queryset(self, queryset):
-        print(queryset)
+        # print(queryset)
         if self.paginator is None:
             return None
         return self.paginator.paginate_queryset(queryset, self.request, view=self)
