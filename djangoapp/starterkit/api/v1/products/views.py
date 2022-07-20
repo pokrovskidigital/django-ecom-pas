@@ -19,9 +19,9 @@ import rest_framework.filters as f
 from .services import ProductFilterSet, ProductSearchFilterSet
 
 replaced_words = [' без ', ' в ', ' для ', ' за ', ' из ', ' к ', ' между ', ' на ', ' по ', ' при ', ' с ',
-     ' у ', ' под ', 'без ', 'в ', 'для ', 'за ', 'из ', 'к ', 'между ', 'на ', 'по ', 'при ',
-     'с ',
-     'у ', 'под ', ]
+                  ' у ', ' под ', 'без ', 'в ', 'для ', 'за ', 'из ', 'к ', 'между ', 'на ', 'по ', 'при ',
+                  'с ',
+                  'у ', 'под ', ]
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -182,6 +182,7 @@ class CompilationListApiView(ListAPIView):
 class CompilationApiView(GenericAPIView):
     queryset = Compilation.objects.all()
     serializer_class = CompilationsViewSerializer
+    pagination_class = StandardResultsSetPagination
     permission_classes = (AllowAny,)
     lookup_field = 'slug'
     filter_backends = (filters.DjangoFilterBackend,)
@@ -210,8 +211,13 @@ class CompilationApiView(GenericAPIView):
     def filter_queryset(self, queryset):
         for backend in list(self.filter_backends):
             queryset = backend().filter_queryset(self.request, queryset, self)
-        print(queryset)
         return queryset
+
+    def paginate_queryset(self, queryset):
+        print(queryset)
+        if self.paginator is None:
+            return None
+        return self.paginator.paginate_queryset(queryset, self.request, view=self)
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
