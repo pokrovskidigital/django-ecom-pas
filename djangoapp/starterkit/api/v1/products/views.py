@@ -126,20 +126,20 @@ class OptionCategoryView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, sex__slug, category__id):
-        options_dict = {'sizes': [], 'colors': [],
-                        'max_price': 0, 'min_price': 0, "brands": []}
 
         try:
             category = Category.objects.get(pk=category__id)
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0,
                                               category__id__in=category.get_descendants(include_self=True))
-            options_dict = get_options(options_dict, products)
+            options_dict = get_options(products)
         except:
             pass
         return Response(options_dict)
 
 
-def get_options(options_dict, products):
+def get_options(products):
+    options_dict = {'sizes': [], 'colors': [],
+                    'max_price': 0, 'min_price': 0, "brands": [], 'categories': []}
     for color in products.values_list('color__title', 'color__code_1c').distinct():
         if color not in options_dict['colors'] and color[0] is not None:
             options_dict['colors'].append(color)
@@ -166,7 +166,7 @@ class OptionAllView(APIView):
 
         try:
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
-            options_dict = get_options(options_dict, products)
+            options_dict = get_options(products)
         except:
             pass
         return Response(options_dict)
@@ -278,7 +278,7 @@ class OptionBrandAllView(APIView):
 
         try:
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0, brand__slug=brand__slug)
-            options_dict = get_options(options_dict, products)
+            options_dict = get_options(products)
         except:
             pass
         return Response(options_dict)
@@ -288,12 +288,9 @@ class OptionCompilationAllView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, compilation__slug):
-        options_dict = {'sizes': [], 'colors': [],
-                        'max_price': 0, 'min_price': 0, "brands": []}
-
         try:
             compilation = Compilation.objects.get(slug__icontains=compilation__slug)
-            options_dict = get_options(options_dict, compilation.products.all())
+            options_dict = get_options(compilation.products.all())
         except:
             pass
         return Response(options_dict)
