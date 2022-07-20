@@ -281,6 +281,21 @@ class OptionBrandAllView(APIView):
         return Response(options_dict)
 
 
+class OptionCompilationAllView(APIView):
+    permission_classes = (AllowAny,)
+
+    def get(self, request, compilation__slug):
+        options_dict = {'sizes': [], 'colors': [],
+                        'max_price': 0, 'min_price': 0, "brands": []}
+
+        try:
+            compilation = Compilation.objects.get(slug__icontains=compilation__slug)
+            options_dict = get_options(options_dict, compilation.products.all())
+        except:
+            pass
+        return Response(options_dict)
+
+
 class ProductByIdView(mixins.ListModelMixin, GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsViewSerializer

@@ -3,10 +3,11 @@ from django.urls import path
 
 from .models import Product
 from .views import ProductsSearchListApiView, CategoryListApiView, ProductApiView, OptionCategoryView, \
-    CompilationListApiView,  ProductsListApiView, BrandListView, ProductsBrandListApiView, OptionAllView, \
-    OptionBrandAllView, BrandView, CompilationApiView,ProductByIdView
+    CompilationListApiView, ProductsListApiView, BrandListView, ProductsBrandListApiView, OptionAllView, \
+    OptionBrandAllView, BrandView, CompilationApiView, ProductByIdView, OptionCompilationAllView
 
 urlpatterns = [
+    path('<slug:compilation__slug>/options', OptionCompilationAllView.as_view()),
     path('search/products/', ProductsSearchListApiView.as_view()),
     path('compilations/<slug:slug>', CompilationApiView.as_view()),
     path('brands/', BrandListView.as_view()),
