@@ -15,10 +15,10 @@ admin.site.register(Menu, MenuAdmin)
 
 
 class ColumnAdmin(admin.ModelAdmin):
-    list_display = ['heading', 'pk']
+    list_display = ['heading','sort_id' , 'pk']
+    list_editable = ['sort_id']
     ordering = ['pk']
     filter_horizontal = ("rows",)
-
 
 admin.site.register(Column, ColumnAdmin)
 
