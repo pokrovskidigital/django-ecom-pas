@@ -250,7 +250,7 @@ class CompilationsViewSerializer(ModelSerializer):
 
 class CompilationsBlockViewSerializer(ModelSerializer):
     title_image = ImageViewSerializer()
-    products = ProductViewSerializer(many=True)
+    products = ProductBlockViewSerializer(many=True)
 
     class Meta:
         model = Compilation
