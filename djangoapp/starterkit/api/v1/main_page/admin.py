@@ -41,8 +41,8 @@ admin.site.register(MobileShopping, MobileShoppingAdmin)
 
 
 class RowAdmin(admin.ModelAdmin):
-    list_display = ['heading', 'pk']
-    ordering = ['pk']
+    # list_display = ['heading', 'pk']
+    # ordering = ['pk']
     form = RowForm
 
 
