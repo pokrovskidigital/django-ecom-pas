@@ -149,9 +149,9 @@ def get_options(products):
     for brand in products.values_list('brand__title', 'brand__slug').distinct():
         if brand not in options_dict['brands']:
             options_dict['brands'].append(brand)
-    cats = products.values_list('category__pk').distinct()
+    cats = products.values_list('category').distinct()
+    print(cats)
     category_data = CategoriesViewSerializer(cats, many=True).data
-    print(category_data)
     options_dict['min_price'] = products.order_by('-price').first().price
     options_dict['max_price'] = products.order_by('price').first().price
     options_dict['categories'] = category_data
