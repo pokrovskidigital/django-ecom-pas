@@ -76,10 +76,10 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
             k = 0.5
             query_string = self.request.data['search']
             query_string = re.sub(r'[ без | в | для | за | из | к | между | на | по | при | с | у | под ]', "",
-            query_string)
+                                  query_string)
             print(query_string)
             for search_query_word in query_string.split(' '):
-                print(search_query_word)
+                # print(search_query_word)
                 prods = prods.filter(
                     leftovers__count__gt=0,
                     leftovers__price__gt=0).annotate(
