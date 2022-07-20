@@ -149,8 +149,8 @@ def get_options(options_dict, products):
     for brand in products.values_list('brand__title', 'brand__slug').distinct():
         if brand not in options_dict['brands']:
             options_dict['brands'].append(brand)
-    cats = products.values_list('category')
-    print(cats)
+    # cats = products.values_list('category')
+    print(products.values_list('category'))
     options_dict['min_price'] = products.order_by('-price').first().price
     options_dict['max_price'] = products.order_by('price').first().price
     return options_dict
