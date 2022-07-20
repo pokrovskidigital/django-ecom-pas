@@ -225,11 +225,11 @@ class CompilationApiView(GenericAPIView):
         page = self.paginate_queryset(ser_prods)
         if page is not None:
             serializer = ProductViewSerializer(page, many=True)
-            ser_prods= serializer.data
+            ser_prods = serializer.data
 
         serializer = self.get_serializer(instance)
         ser_data = serializer.data
-        ser_data['products'] = ser_prods.data
+        ser_data['products'] = ser_prods
         return Response(ser_data)
 
 
