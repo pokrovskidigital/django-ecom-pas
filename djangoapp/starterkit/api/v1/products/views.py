@@ -18,6 +18,11 @@ from rest_framework.permissions import AllowAny
 import rest_framework.filters as f
 from .services import ProductFilterSet, ProductSearchFilterSet
 
+replaced_words = [' без ', ' в ', ' для ', ' за ', ' из ', ' к ', ' между ', ' на ', ' по ', ' при ', ' с ',
+     ' у ', ' под ', 'без ', 'в ', 'для ', 'за ', 'из ', 'к ', 'между ', 'на ', 'по ', 'при ',
+     'с ',
+     'у ', 'под ', ]
+
 
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 20
@@ -74,10 +79,8 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         if 'search' in self.request.data.keys():
             prods = Product.objects.all()
             k = 0.5
-            replased_pref = [' без ', ' в ', ' для ', ' за ', ' из ', ' к ', ' между ', ' на ', ' по ', ' при ', ' с ',
-                             ' у ', ' под ']
             query_string = self.request.data['search']
-            for r in replased_pref:
+            for r in replaced_words:
                 query_string = query_string.replace(r, ' ')
             query_string = list(filter(lambda x: x != "", query_string.split(' ')))
             print(query_string)
