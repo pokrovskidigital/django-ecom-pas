@@ -151,6 +151,7 @@ def get_options(products):
             options_dict['brands'].append(brand)
     cats = products.values_list('category__pk').distinct()
     category_data = CategoriesViewSerializer(cats, many=True).data
+    print(category_data)
     options_dict['min_price'] = products.order_by('-price').first().price
     options_dict['max_price'] = products.order_by('price').first().price
     options_dict['categories'] = category_data
@@ -162,7 +163,6 @@ class OptionAllView(APIView):
 
     def get(self, request, sex__slug):
         options_dict = []
-
 
         try:
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
@@ -289,11 +289,11 @@ class OptionCompilationAllView(APIView):
     def get(self, request, compilation__slug):
         options_dict = []
 
-        try:
-            compilation = Compilation.objects.get(slug__icontains=compilation__slug)
-            options_dict = get_options(compilation.products.all())
-        except:
-            pass
+        # try:
+        compilation = Compilation.objects.get(slug__icontains=compilation__slug)
+        options_dict = get_options(compilation.products.all())
+        # except:
+        #     pass
         return Response(options_dict)
 
 
