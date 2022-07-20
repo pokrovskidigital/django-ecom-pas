@@ -221,7 +221,12 @@ class CompilationApiView(GenericAPIView):
 
     def get(self, request, *args, **kwargs):
         instance = self.get_object()
-        ser_prods = ProductViewSerializer(self.filter_queryset(instance.products.all()), many=True)
+        ser_prods = self.filter_queryset(instance.products.all())
+        page = self.paginate_queryset(ser_prods)
+        if page is not None:
+            serializer = ProductViewSerializer(page, many=True)
+            print(self.get_paginated_response(serializer.data))
+
         serializer = self.get_serializer(instance)
         ser_data = serializer.data
         ser_data['products'] = ser_prods.data
