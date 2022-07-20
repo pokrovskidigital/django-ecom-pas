@@ -27,6 +27,7 @@ class Menu(models.Model):
     columns = models.ManyToManyField('Column', blank=True, null=True, related_name='main_page')
     promo = models.ForeignKey("PromoBanner", on_delete=models.CASCADE, blank=True, null=True)
     sex = models.ForeignKey(Sex, on_delete=models.CASCADE, blank=True, null=True)
+    sort_id = models.PositiveIntegerField(default=0)
 
     def sex_slug(self):
         return self.sex.slug
