@@ -126,7 +126,7 @@ class OptionCategoryView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, sex__slug, category__id):
-
+        options_dict = []
         try:
             category = Category.objects.get(pk=category__id)
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0,
@@ -161,8 +161,8 @@ class OptionAllView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, sex__slug):
-        options_dict = {'sizes': [], 'colors': [],
-                        'max_price': 0, 'min_price': 0, "brands": []}
+        options_dict = []
+
 
         try:
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
@@ -273,8 +273,7 @@ class OptionBrandAllView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, sex__slug, brand__slug):
-        options_dict = {'sizes': [], 'colors': [],
-                        'max_price': 0, 'min_price': 0, "brands": []}
+        options_dict = []
 
         try:
             products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0, brand__slug=brand__slug)
@@ -288,6 +287,8 @@ class OptionCompilationAllView(APIView):
     permission_classes = (AllowAny,)
 
     def get(self, request, compilation__slug):
+        options_dict = []
+
         try:
             compilation = Compilation.objects.get(slug__icontains=compilation__slug)
             options_dict = get_options(compilation.products.all())
