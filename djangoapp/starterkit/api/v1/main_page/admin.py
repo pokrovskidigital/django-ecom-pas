@@ -7,18 +7,21 @@ RowForm = select2_modelform(Row, attrs={'width': '250px'})
 
 # Register your models here.
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ['label', 'sex_slug']
+    list_display = ['label', 'sex_slug', 'sort_id']
+    list_editable = ['sort_id']
     ordering = ['pk']
+    list_filter = ['sex_slug']
 
 
 admin.site.register(Menu, MenuAdmin)
 
 
 class ColumnAdmin(admin.ModelAdmin):
-    list_display = ['heading','sort_id' , 'pk']
+    list_display = ['heading', 'sort_id', 'pk']
     list_editable = ['sort_id']
     ordering = ['pk']
     filter_horizontal = ("rows",)
+
 
 admin.site.register(Column, ColumnAdmin)
 
@@ -33,7 +36,8 @@ admin.site.register(ProductBlock, ProductBlockAdmin)
 
 
 class MobileShoppingAdmin(admin.ModelAdmin):
-    list_display = ['heading', 'pk']
+    list_display = ['heading', 'sort_id', 'pk']
+    list_editable = ['sort_id']
     ordering = ['pk']
 
 
