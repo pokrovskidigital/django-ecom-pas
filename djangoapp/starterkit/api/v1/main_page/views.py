@@ -31,3 +31,4 @@ class MainPageListApiView(ListAPIView):
             .prefetch_related('mobile_shopping_parts',
                               'product_blocks',
                               'compilations', 'product_blocks__products').select_related("sex", 'slider').distinct()
+#extra_images leftovers

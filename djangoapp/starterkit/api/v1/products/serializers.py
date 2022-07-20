@@ -209,6 +209,16 @@ class ProductsViewSerializer(ModelSerializer):
         fields = ('id', 'slug', 'title', 'price', 'brand', 'image', 'leftovers', 'description', 'sex', 'search_string')
 
 
+class ProductBlockViewSerializer(ModelSerializer):
+    brand = BrandSerializer()
+    image = ImageViewSerializer(many=True)
+    leftovers = LeftoverViewSerializer(many=True)
+
+    class Meta:
+        model = Product
+        fields = ('id', 'title', 'price', 'brand', 'image', 'leftovers', 'sku')
+
+
 class ProductViewSerializer(ModelSerializer):
     category = CategorySerializer()
     brand = BrandListViewSerializer()
@@ -238,3 +248,10 @@ class CompilationsViewSerializer(ModelSerializer):
         fields = "__all__"
 
 
+class CompilationsBlockViewSerializer(ModelSerializer):
+    title_image = ImageViewSerializer()
+    products = ProductViewSerializer(many=True)
+
+    class Meta:
+        model = Compilation
+        fields = "__all__"
