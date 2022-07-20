@@ -10,7 +10,7 @@ class MenuAdmin(admin.ModelAdmin):
     list_display = ['label', 'sex_slug', 'sort_id']
     list_editable = ['sort_id']
     ordering = ['pk']
-    list_filter = ['sex_slug']
+    list_filter = ['sex']
 
 
 admin.site.register(Menu, MenuAdmin)
