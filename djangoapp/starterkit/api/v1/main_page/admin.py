@@ -1,5 +1,8 @@
 from django.contrib import admin
 from .models import Menu, Column, PromoBanner, Row, Slider, Slide, MainPage, ProductBlock, MobileShopping
+from easy_select2 import select2_modelform
+
+RowForm = select2_modelform(Row, attrs={'width': '250px'})
 
 
 # Register your models here.
@@ -40,6 +43,7 @@ admin.site.register(MobileShopping, MobileShoppingAdmin)
 class RowAdmin(admin.ModelAdmin):
     list_display = ['heading', 'pk']
     ordering = ['pk']
+    form = RowForm
 
 
 admin.site.register(Row, RowAdmin)

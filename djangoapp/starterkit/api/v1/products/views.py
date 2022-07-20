@@ -62,6 +62,9 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
     serializer_class = ProductsViewSerializer
     permission_classes = (AllowAny,)
 
+    # def list_categories(self, request, *args, **kwargs):
+
+
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
@@ -83,8 +86,26 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
             for r in replaced_words:
                 query_string = query_string.replace(r, ' ')
             query_string = list(filter(lambda x: x != "", query_string.split(' ')))
-            print(query_string)
+            for search_query_word in query_string:
+                # print(search_query_word)
+                prods = prods.filter(
+                    leftovers__count__gt=0,
+                    leftovers__price__gt=0).annotate(
+                    similarity=TrigramWordSimilarity(search_query_word, 'search_string')).filter(
+                    similarity__gt=k).order_by('-similarity').distinct()
+                k -= 0.1
+            return prods
 
+        return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
+
+    def get_queryset_category(self):
+        if 'search' in self.request.data.keys():
+            prods = Product.objects.all()
+            k = 0.5
+            query_string = self.request.data['search']
+            for r in replaced_words:
+                query_string = query_string.replace(r, ' ')
+            query_string = list(filter(lambda x: x != "", query_string.split(' ')))
             for search_query_word in query_string:
                 # print(search_query_word)
                 prods = prods.filter(
