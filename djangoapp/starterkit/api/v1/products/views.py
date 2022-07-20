@@ -138,6 +138,7 @@ class OptionCategoryView(APIView):
 
 
 def get_options(products):
+    cat_list = []
     options_dict = {'sizes': [], 'colors': [],
                     'max_price': 0, 'min_price': 0, "brands": [], 'categories': []}
     for color in products.values_list('color__title', 'color__code_1c').distinct():
@@ -149,9 +150,13 @@ def get_options(products):
     for brand in products.values_list('brand__title', 'brand__slug').distinct():
         if brand not in options_dict['brands']:
             options_dict['brands'].append(brand)
-    cats = products.values('category').distinct()
-
-    category_data = CategoriesViewSerializer(cats, many=True).data
+    cats = products.values_list('category').distinct()
+    print(cats)
+    for cat in cats:
+        cat_list.append(cat[0])
+    categoties = Category.objects.filter(pk__in=cat_list)
+    print(categoties)
+    category_data = CategoriesViewSerializer(categoties, many=True).data
     options_dict['min_price'] = products.order_by('-price').first().price
     options_dict['max_price'] = products.order_by('price').first().price
     options_dict['categories'] = category_data
