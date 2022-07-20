@@ -79,7 +79,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
             query_string = self.request.data['search']
             for r in replased_pref:
                 query_string = query_string.replace(r, ' ')
-            print(query_string)
+            query_string = list(filter(lambda x: x != "", query_string))
             for search_query_word in query_string.split(' '):
                 # print(search_query_word)
                 prods = prods.filter(
@@ -87,7 +87,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
                     leftovers__price__gt=0).annotate(
                     similarity=TrigramWordSimilarity(search_query_word, 'search_string')).filter(
                     similarity__gt=k).order_by('-similarity').distinct()
-                k -= 0.2
+                k -= 0.1
             return prods
 
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
