@@ -10,7 +10,8 @@ class Row(models.Model):
     category = TreeForeignKey(Category, blank=True, on_delete=models.CASCADE, null=True, related_name='row')
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.CASCADE, related_name='row')
     sort_id = models.PositiveIntegerField(default=0)
-
+    def __str__(self):
+        return self.heading
 
 class Column(models.Model):
     heading = models.CharField(max_length=200, default='-')
@@ -37,7 +38,8 @@ class PromoBanner(models.Model):
     caption = models.CharField(max_length=200, default='-')
     button_label = models.CharField(max_length=200, default='-')
     path = models.CharField(max_length=200, default='-')
-
+    def __str__(self):
+        return self.heading
 
 class Slider(models.Model):
     heading = models.CharField(max_length=200, default='-')
@@ -83,7 +85,8 @@ class MobileShopping(models.Model):
     image = models.FileField(upload_to="media/main_page/img/", blank=True, null=True)
     link = models.URLField(max_length=200, default='-')
     sort_id = models.PositiveIntegerField(default=0)
-
+    def __str__(self):
+        return self.heading
 
 class MainPage(models.Model):
     compilations = models.ManyToManyField(Compilation, related_name='MainMenu')
