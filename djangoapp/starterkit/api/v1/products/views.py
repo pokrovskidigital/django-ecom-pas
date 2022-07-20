@@ -75,7 +75,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
             prods = Product.objects.all()
             k = 0.5
             query_string = self.request.data['search']
-            query_string = re.sub(r'[ без | в | для | за | из | к | между | на | по | при | с | у | под ]', "",
+            query_string = re.sub(r'[без|в|для|за|из|к|между|на|по|при|с|у|под]', "",
                                   query_string)
             print(query_string)
             for search_query_word in query_string.split(' '):

@@ -27,4 +27,5 @@ class MainPageListApiView(ListAPIView):
     filter_backends = (filters.DjangoFilterBackend,)
 
     def get_queryset(self):
-        return MainPage.objects.filter(sex__slug=self.kwargs['sex__slug']).distinct()
+        return MainPage.objects.filter(sex__slug=self.kwargs['sex__slug']).prefetch_related('mobile_shopping_parts',
+                                                                                            'product_blocks','compilations').distinct()
