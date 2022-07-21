@@ -189,11 +189,11 @@ class OptionAllView(APIView):
     def get(self, request, sex__slug):
         options_dict = []
 
-        try:
-            products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
-            options_dict = get_options(products)
-        except:
-            pass
+        # try:
+        products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
+        options_dict = get_options(products)
+        # except:
+        #     pass
         return Response(options_dict)
 
 
