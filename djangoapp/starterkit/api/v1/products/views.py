@@ -97,11 +97,6 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         }
         queryset = self.filter_queryset(self.get_queryset())
         category_queryset = self.get_queryset_category()
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
         serializer = self.get_serializer(queryset, many=True)
         cat_serializer = CategorySearchSerializer(category_queryset, many=True)
         resp_data['products'] = serializer.data['results']
