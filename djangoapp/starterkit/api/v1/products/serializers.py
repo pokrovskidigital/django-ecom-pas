@@ -215,6 +215,15 @@ class ProductsViewSerializer(ModelSerializer):
         fields = ('id', 'slug', 'title', 'price', 'brand', 'image', 'leftovers', 'description', 'sex', 'search_string')
 
 
+class ProductsSearchSerializer(ModelSerializer):
+    brand = BrandSerializer()
+    image = ImageViewSerializer(many=True)
+
+    class Meta:
+        model = Product
+        fields = ('id', 'slug', 'title', 'price', 'brand', 'image',)
+
+
 class ProductBlockViewSerializer(ModelSerializer):
     brand = BrandSerializer()
     image = ImageViewSerializer(many=True)

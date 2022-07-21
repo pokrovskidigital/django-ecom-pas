@@ -13,7 +13,8 @@ from rest_framework.response import Response
 
 from .models import Product, Category, Compilation, Brand
 from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
-    CompilationsViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer, CategorySearchSerializer
+    CompilationsViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer, CategorySearchSerializer, \
+    ProductsSearchSerializer
 from rest_framework.permissions import AllowAny
 import rest_framework.filters as f
 from .services import ProductFilterSet, ProductSearchFilterSet
@@ -85,7 +86,7 @@ class ProductsListApiView(ListAPIView):
 
 class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
     pagination_class = StandardResultsSetPagination
-    serializer_class = ProductsViewSerializer
+    serializer_class = ProductsSearchSerializer
     permission_classes = (AllowAny,)
 
     # def list_categories(self, request, *args, **kwargs):
@@ -100,7 +101,6 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         serializer = self.get_serializer(queryset, many=True)
         cat_serializer = CategorySearchSerializer(category_queryset, many=True)
         resp_data['products'] = serializer.data
-        # resp_data[]
         resp_data['categories'] = cat_serializer.data
         return Response(resp_data)
 
