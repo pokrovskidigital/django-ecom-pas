@@ -13,7 +13,7 @@ from rest_framework.response import Response
 
 from .models import Product, Category, Compilation, Brand
 from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
-    CompilationsViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer,CategorySearchSerializer
+    CompilationsViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer, CategorySearchSerializer
 from rest_framework.permissions import AllowAny
 import rest_framework.filters as f
 from .services import ProductFilterSet, ProductSearchFilterSet
@@ -106,6 +106,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         cat_serializer = CategorySearchSerializer(category_queryset, many=True)
         resp_data['products'] = serializer.data['results']
         # resp_data[]
+        resp_data['categories'] = cat_serializer.data
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
