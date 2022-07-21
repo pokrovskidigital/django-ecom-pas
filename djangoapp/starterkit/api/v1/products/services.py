@@ -41,14 +41,12 @@ class ProductFilterSet(django_filters.FilterSet):
     category = TreeNodeChoiceFilter(queryset=Category.objects.all(), field_name='category')
     price = django_filters.RangeFilter(field_name='price')
     brand = MultipleCharFilter(field_name="brand__slug", lookup_expr="icontains")
-    color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
-                                                     queryset=Color.objects.all())
-    size = django_filters.ModelMultipleChoiceFilter(field_name="leftovers__parent_size__title", to_field_name="title",
-                                                    queryset=Size.objects.all())
+    color = MultipleCharFilter(field_name="color__code_1c", to_field_name="code_1c", )
+    size = MultipleCharFilter(field_name="leftovers__parent_size__title", to_field_name="title", )
 
     class Meta:
         model = Product
-        fields = ('price', 'brand', 'color', 'size','category')
+        fields = ('price', 'brand', 'color', 'size', 'category')
 
 
 class ProductSearchFilterSet(django_filters.FilterSet):
@@ -58,10 +56,8 @@ class ProductSearchFilterSet(django_filters.FilterSet):
                                                    queryset=Sex.objects.all())
     price = django_filters.RangeFilter(field_name='price')
     brand = MultipleCharFilter(field_name="brand__slug", lookup_expr="icontains")
-    color = django_filters.ModelMultipleChoiceFilter(field_name="color__code_1c", to_field_name="code_1c",
-                                                     queryset=Color.objects.all())
-    size = django_filters.ModelMultipleChoiceFilter(field_name="leftovers__parent_size__title", to_field_name="title",
-                                                    queryset=Size.objects.all())
+    color = MultipleCharFilter(field_name="color__code_1c", lookup_expr="icontains", )
+    size = MultipleCharFilter(field_name="leftovers__parent_size__title", lookup_expr="icontains", )
 
     class Meta:
         model = Product

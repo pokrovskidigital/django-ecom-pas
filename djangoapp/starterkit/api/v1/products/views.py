@@ -125,7 +125,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
 
     def get_queryset_category(self):
         if 'search' in self.request.data.keys():
-            category = Product.objects.all()
+            categories_query = Category.objects.all()
             k = 0.5
             query_string = self.request.data['search']
             for r in replaced_words:
@@ -133,13 +133,11 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
             query_string = list(filter(lambda x: x != "", query_string.split(' ')))
             for search_query_word in query_string:
                 # print(search_query_word)
-                prods = prods.filter(
-                    leftovers__count__gt=0,
-                    leftovers__price__gt=0).annotate(
-                    similarity=TrigramWordSimilarity(search_query_word, 'search_string')).filter(
+                categories = categories_query.annotate(
+                    similarity=TrigramWordSimilarity(search_query_word, 'title')).filter(
                     similarity__gt=k).order_by('-similarity').distinct()
                 k -= 0.1
-            return prods
+            return categories
 
         return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
 
@@ -189,11 +187,11 @@ class OptionAllView(APIView):
     def get(self, request, sex__slug):
         options_dict = []
 
-        # try:
-        products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
-        options_dict = get_options(products)
-        # except:
-        #     pass
+        try:
+            products = Product.objects.filter(sex__slug=sex__slug, leftovers__count__gt=0)
+            options_dict = get_options(products)
+        except:
+            pass
         return Response(options_dict)
 
 
