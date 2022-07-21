@@ -30,13 +30,13 @@ def get_options(products):
                     'max_price': 0, 'min_price': 0, "brand": [], 'categories': []}
     for color in products.values_list('color__title', 'color__code_1c').distinct():
         if color not in options_dict['colors'] and color[0] is not None:
-            options_dict['colors'].append(color)
+            options_dict['color'].append(color)
     for size in products.values_list('leftovers__parent_size__title').distinct():
         if size not in options_dict['sizes']:
-            options_dict['sizes'].append(size)
+            options_dict['size'].append(size)
     for brand in products.values_list('brand__title', 'brand__slug').distinct():
         if brand not in options_dict['brands']:
-            options_dict['brands'].append(brand)
+            options_dict['brand'].append(brand)
     cats = products.values_list('category').distinct()
     print(cats)
     for cat in cats:
