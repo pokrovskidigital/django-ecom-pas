@@ -100,6 +100,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         serializer = self.get_serializer(queryset, many=True)
         cat_serializer = CategorySearchSerializer(category_queryset, many=True)
         resp_data['products'] = serializer.data['results']
+        resp_data['products'] = serializer.data
         # resp_data[]
         resp_data['categories'] = cat_serializer.data
         return Response(resp_data)
