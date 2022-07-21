@@ -24,6 +24,32 @@ replaced_words = [' без ', ' в ', ' для ', ' за ', ' из ', ' к ', ' 
                   'у ', 'под ', ]
 
 
+def get_options(products):
+    cat_list = []
+    options_dict = {'size': [], 'color': [],
+                    'max_price': 0, 'min_price': 0, "brand": [], 'categories': []}
+    for color in products.values_list('color__title', 'color__code_1c').distinct():
+        if color not in options_dict['colors'] and color[0] is not None:
+            options_dict['colors'].append(color)
+    for size in products.values_list('leftovers__parent_size__title').distinct():
+        if size not in options_dict['sizes']:
+            options_dict['sizes'].append(size)
+    for brand in products.values_list('brand__title', 'brand__slug').distinct():
+        if brand not in options_dict['brands']:
+            options_dict['brands'].append(brand)
+    cats = products.values_list('category').distinct()
+    print(cats)
+    for cat in cats:
+        cat_list.append(cat[0])
+    categoties = Category.objects.filter(pk__in=cat_list)
+    print(categoties)
+    category_data = CategoriesViewSerializer(categoties, many=True).data
+    options_dict['min_price'] = products.order_by('-price').first().price
+    options_dict['max_price'] = products.order_by('price').first().price
+    options_dict['categories'] = category_data
+    return options_dict
+
+
 class StandardResultsSetPagination(PageNumberPagination):
     page_size = 20
     page_size_query_param = 'page_size'
@@ -64,7 +90,6 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
 
     # def list_categories(self, request, *args, **kwargs):
 
-
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
@@ -100,7 +125,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
 
     def get_queryset_category(self):
         if 'search' in self.request.data.keys():
-            prods = Product.objects.all()
+            category = Product.objects.all()
             k = 0.5
             query_string = self.request.data['search']
             for r in replaced_words:
@@ -156,32 +181,6 @@ class OptionCategoryView(APIView):
         except:
             pass
         return Response(options_dict)
-
-
-def get_options(products):
-    cat_list = []
-    options_dict = {'size': [], 'color': [],
-                    'max_price': 0, 'min_price': 0, "brand": [], 'categories': []}
-    for color in products.values_list('color__title', 'color__code_1c').distinct():
-        if color not in options_dict['colors'] and color[0] is not None:
-            options_dict['colors'].append(color)
-    for size in products.values_list('leftovers__parent_size__title').distinct():
-        if size not in options_dict['sizes']:
-            options_dict['sizes'].append(size)
-    for brand in products.values_list('brand__title', 'brand__slug').distinct():
-        if brand not in options_dict['brands']:
-            options_dict['brands'].append(brand)
-    cats = products.values_list('category').distinct()
-    print(cats)
-    for cat in cats:
-        cat_list.append(cat[0])
-    categoties = Category.objects.filter(pk__in=cat_list)
-    print(categoties)
-    category_data = CategoriesViewSerializer(categoties, many=True).data
-    options_dict['min_price'] = products.order_by('-price').first().price
-    options_dict['max_price'] = products.order_by('price').first().price
-    options_dict['categories'] = category_data
-    return options_dict
 
 
 class OptionAllView(APIView):
