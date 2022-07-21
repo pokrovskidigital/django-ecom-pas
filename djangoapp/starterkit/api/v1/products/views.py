@@ -107,7 +107,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
         resp_data['products'] = serializer.data['results']
         # resp_data[]
         resp_data['categories'] = cat_serializer.data
-        return Response(serializer.data)
+        return Response(resp_data)
 
     def post(self, request, *args, **kwargs):
         return self.list(request)
