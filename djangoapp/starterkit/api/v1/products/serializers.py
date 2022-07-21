@@ -187,6 +187,12 @@ class BrandMenuSerializer(ModelSerializer):
         fields = ('title', 'slug',)
 
 
+class BrandSearchSerializer(ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ('title', 'slug', 'icon')
+
+
 class ColorViewSerializer(ModelSerializer):
     class Meta:
         model = Color

@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from .models import Product, Category, Compilation, Brand
 from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
     CompilationsViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer, CategorySearchSerializer, \
-    ProductsSearchSerializer
+    ProductsSearchSerializer, BrandSearchSerializer
 from rest_framework.permissions import AllowAny
 import rest_framework.filters as f
 from .services import ProductFilterSet, ProductSearchFilterSet
@@ -89,19 +89,21 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
     serializer_class = ProductsSearchSerializer
     permission_classes = (AllowAny,)
 
-    # def list_categories(self, request, *args, **kwargs):
-
     def list(self, request, *args, **kwargs):
         resp_data = {
             'categories': [],
-            'products': []
+            'products': [],
+            'brands':[]
         }
         queryset = self.filter_queryset(self.get_queryset())
         category_queryset = self.get_queryset_category()
+        brand_queryset = self.get_queryset_brand()
         serializer = self.get_serializer(queryset, many=True)
         cat_serializer = CategorySearchSerializer(category_queryset, many=True)
+        brand_serializer = BrandSearchSerializer(brand_queryset, many=True)
         resp_data['products'] = serializer.data
         resp_data['categories'] = cat_serializer.data
+        resp_data['brands'] = brand_serializer.data
         return Response(resp_data)
 
     def post(self, request, *args, **kwargs):
@@ -142,6 +144,24 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
                     similarity__gt=k).order_by('-similarity').distinct()
                 k -= 0.1
             return categories_query
+
+        return Category.objects.all()
+
+    def get_queryset_brand(self):
+        if 'search' in self.request.data.keys():
+            brand_query = Brand.objects.all()
+            k = 0.5
+            query_string = self.request.data['search']
+            for r in replaced_words:
+                query_string = query_string.replace(r, ' ')
+            query_string = list(filter(lambda x: x != "", query_string.split(' ')))
+            for search_query_word in query_string:
+                # print(search_query_word)
+                brand_query = brand_query.annotate(
+                    similarity=TrigramWordSimilarity(search_query_word, 'title')).filter(
+                    similarity__gt=k).order_by('-similarity').distinct()
+                k -= 0.1
+            return brand_query
 
         return Category.objects.all()
 
