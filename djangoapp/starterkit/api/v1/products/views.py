@@ -160,8 +160,8 @@ class OptionCategoryView(APIView):
 
 def get_options(products):
     cat_list = []
-    options_dict = {'sizes': [], 'colors': [],
-                    'max_price': 0, 'min_price': 0, "brands": [], 'categories': []}
+    options_dict = {'size': [], 'color': [],
+                    'max_price': 0, 'min_price': 0, "brand": [], 'categories': []}
     for color in products.values_list('color__title', 'color__code_1c').distinct():
         if color not in options_dict['colors'] and color[0] is not None:
             options_dict['colors'].append(color)
