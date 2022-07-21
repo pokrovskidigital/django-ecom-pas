@@ -53,6 +53,12 @@ class CategoryCreateSerializer(ModelSerializer):
         return category
 
 
+class CategorySearchSerializer(ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('title', 'slug',)
+
+
 class SizeCreateSerializer(ModelSerializer):
     class Meta:
         model = Size

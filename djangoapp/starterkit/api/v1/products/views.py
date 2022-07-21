@@ -13,7 +13,7 @@ from rest_framework.response import Response
 
 from .models import Product, Category, Compilation, Brand
 from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
-    CompilationsViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer
+    CompilationsViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer,CategorySearchSerializer
 from rest_framework.permissions import AllowAny
 import rest_framework.filters as f
 from .services import ProductFilterSet, ProductSearchFilterSet
@@ -91,13 +91,21 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
     # def list_categories(self, request, *args, **kwargs):
 
     def list(self, request, *args, **kwargs):
+        resp_data = {
+            'categories': [],
+            'products': []
+        }
         queryset = self.filter_queryset(self.get_queryset())
+        category_queryset = self.get_queryset_category()
         page = self.paginate_queryset(queryset)
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(queryset, many=True)
+        cat_serializer = CategorySearchSerializer(category_queryset, many=True)
+        resp_data['products'] = serializer.data['results']
+        # resp_data[]
         return Response(serializer.data)
 
     def post(self, request, *args, **kwargs):
@@ -115,7 +123,7 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
                 # print(search_query_word)
                 prods = prods.filter(
                     leftovers__count__gt=0,
-                    leftovers__price__gt=0).annotate(
+                    leftovers__price__gt=0, sex__slug=self.request.data['sex']).annotate(
                     similarity=TrigramWordSimilarity(search_query_word, 'search_string')).filter(
                     similarity__gt=k).order_by('-similarity').distinct()
                 k -= 0.1
@@ -133,13 +141,13 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
             query_string = list(filter(lambda x: x != "", query_string.split(' ')))
             for search_query_word in query_string:
                 # print(search_query_word)
-                categories = categories_query.annotate(
+                categories_query = categories_query.filter(sex__slug=self.request.data['sex']).annotate(
                     similarity=TrigramWordSimilarity(search_query_word, 'title')).filter(
                     similarity__gt=k).order_by('-similarity').distinct()
                 k -= 0.1
-            return categories
+            return categories_query
 
-        return Product.objects.filter(leftovers__count__gt=0, leftovers__price__gt=0).distinct()
+        return Category.objects.all()
 
 
 class ProductsBrandListApiView(ListAPIView):
