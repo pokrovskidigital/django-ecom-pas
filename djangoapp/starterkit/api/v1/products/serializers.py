@@ -65,7 +65,7 @@ class SizeCreateSerializer(ModelSerializer):
         fields = "__all__"
 
     def create(self, validated_data):
-        size = Size.objects.update_or_create(slug=validated_data.get('slug', None), defaults=validated_data)
+        size = Size.objects.update_or_create(title=validated_data.get('title', None), defaults=validated_data)
         return size
 
 

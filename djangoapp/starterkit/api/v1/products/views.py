@@ -88,22 +88,24 @@ class ProductsSearchListApiView(mixins.ListModelMixin, GenericAPIView):
     pagination_class = StandardResultsSetPagination
     serializer_class = ProductsSearchSerializer
     permission_classes = (AllowAny,)
+    filter_backends = (filters.DjangoFilterBackend,)
+    filterset_class = ProductSearchFilterSet
 
     def list(self, request, *args, **kwargs):
-        resp_data = {
-            'categories': [],
-            'products': [],
-            'brands':[]
-        }
+        options = get_options(products=self.get_queryset())
         queryset = self.filter_queryset(self.get_queryset())
         category_queryset = self.get_queryset_category()
         brand_queryset = self.get_queryset_brand()
+        page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(queryset, many=True)
         cat_serializer = CategorySearchSerializer(category_queryset, many=True)
         brand_serializer = BrandSearchSerializer(brand_queryset, many=True)
-        resp_data['products'] = serializer.data
-        resp_data['categories'] = cat_serializer.data
-        resp_data['brands'] = brand_serializer.data
+        resp_data = {
+            'categories': cat_serializer.data,
+            'products': serializer.data,
+            'brands': brand_serializer.data,
+            'options': options
+        }
         return Response(resp_data)
 
     def post(self, request, *args, **kwargs):
