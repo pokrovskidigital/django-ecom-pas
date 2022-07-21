@@ -287,7 +287,7 @@ class BrandListView(ListAPIView):
     pagination_class = None
     permission_classes = (AllowAny,)
     filter_backends = (filters.DjangoFilterBackend,)
-    serializer_class = BrandListViewSerializer
+    serializer_class = BrandSearchSerializer
 
     def get_queryset(self):
         return Brand.objects.filter(product__isnull=False).distinct()
