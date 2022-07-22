@@ -9,6 +9,8 @@ services:
       - ./djangoapp:/var/djangoapp # <-- bind the application code
       - ./static_volume:/var/static  # <-- bind the static files
       - ./media_volume:/var/media  # <-- bind the media files
+    ports:
+      - '8000:8000'
     networks:
       - nginx_network
       - database1_network
@@ -44,6 +46,8 @@ services:
       - config/db/database1_env
     networks:
       - database1_network
+    ports:
+      - 5432:5432
     volumes:
       - ./postgres/data:/var/lib/postgresql/data # <-- bind the database to local directory
 

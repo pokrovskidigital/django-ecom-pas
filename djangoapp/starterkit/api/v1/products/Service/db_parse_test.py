@@ -10,16 +10,17 @@ from .parser_test import parse_offers
 from progress.bar import *
 from django.conf import settings
 
+
 def clear_all():
     Image.objects.all().delete()
-    # Product.objects.all().delete()
-    # Category.objects.all().delete()
-    # Sex.objects.all().delete()
-    # Color.objects.all().delete()
-    # Tag.objects.all().delete()
-    # Brand.objects.all().delete()
-    # Leftover.objects.all().delete()
-    # Size.objects.all().delete()
+    Product.objects.all().delete()
+    Category.objects.all().delete()
+    Sex.objects.all().delete()
+    Color.objects.all().delete()
+    Tag.objects.all().delete()
+    Brand.objects.all().delete()
+    Leftover.objects.all().delete()
+    Size.objects.all().delete()
 
 
 class DBParser():
@@ -40,7 +41,7 @@ class DBParser():
         print('Connect successful')
 
     def fetch_all_products(self):
-        self.cursor.execute('SELECT * FROM [iShop].[Articles] ORDER BY [Article_Id];')
+        self.cursor.execute('SELECT * FROM [iShop].[Articles] ORDER BY  [Season] DESC;')
         rows = self.cursor.fetchall()
         return rows
 
@@ -179,7 +180,7 @@ class DBParser():
                 product_sku.append(prod.sku)
             count += 1
             bar.next()
-            if count > 2000:
+            if count > 200:
                 break
         bar.finish()
 
@@ -220,6 +221,7 @@ class DBParser():
                     prod.price = offer['price']
                     prod.leftovers.add(*offer['leftover'])
                     prod.save()
+            count += 1
 
             bar.next()
         else:
@@ -274,7 +276,7 @@ class DBParser():
         bar = IncrementalBar('Countdown', max=len(rows))
 
         for row in rows:
-            prods = Product.objects.filter(id_1c=row['ArticleIDD'])
+            prods = Product.objects.filter(id_1c=row['ArticleIDD']).select_related("color")
             if prods:
                 code = row['FileName'].split('_')[-2]
                 if not code == 'NA':
@@ -282,30 +284,30 @@ class DBParser():
                         img = None
                         if 'LARGE' in row['FileName']:
                             img = Image.objects.update_or_create(
-                                image_l=f'{settings.MEDIA_ROOT}/img/products/LARGE/' + row['FileName'].split('\\')[-1],
+                                image_l=f'media/LARGE/' + row['FileName'].split('\\')[-1],
                                 title=row['ArticleIDD'])
                         elif 'MEDIUM' in row['FileName']:
                             img = Image.objects.update_or_create(
-                                image_m=f'{settings.MEDIA_ROOT}/img/products/MEDIUM/' + row['FileName'].split('\\')[-1],
+                                image_m=f'media/MEDIUM/' + row['FileName'].split('\\')[-1],
                                 title=row['ArticleIDD'])
                         elif 'SMALL' in row['FileName']:
                             img = Image.objects.update_or_create(
-                                image_l=f'{settings.MEDIA_ROOT}/img/products/SMALL/' + row['FileName'].split('\\')[-1],
+                                image_l=f'media/SMALL/' + row['FileName'].split('\\')[-1],
                                 title=row['ArticleIDD'])
                         prods[0].image.add(img[0].pk)
                 else:
                     img = None
                     if 'LARGE' in row['FileName']:
                         img = Image.objects.update_or_create(
-                            image_l=f'{settings.MEDIA_ROOT}/img/products/LARGE/' + row['FileName'].split('\\')[-1],
+                            image_l=f'/LARGE/' + row['FileName'].split('\\')[-1],
                             title=row['ArticleIDD'])
                     elif 'MEDIUM' in row['FileName']:
                         img = Image.objects.update_or_create(
-                            image_m=f'{settings.MEDIA_ROOT}/img/products/MEDIUM/' + row['FileName'].split('\\')[-1],
+                            image_m=f'/MEDIUM/' + row['FileName'].split('\\')[-1],
                             title=row['ArticleIDD'])
                     elif 'SMALL' in row['FileName']:
                         img = Image.objects.update_or_create(
-                            image_l=f'{settings.MEDIA_ROOT}/img/products/SMALL/' + row['FileName'].split('\\')[-1],
+                            image_l=f'/SMALL/' + row['FileName'].split('\\')[-1],
                             title=row['ArticleIDD'])
                     for prod in prods:
                         prod.image.add(img[0].pk)
@@ -318,11 +320,11 @@ class DBParser():
 
 def parse():
     parser = DBParser()
-    # clear_all()
-    # parser.parse_categories()
-    # parser.parse_subcategory()
-    # parser.parse_brands()
-    # parser.parse_products()
+    clear_all()
+    parser.parse_categories()
+    parser.parse_subcategory()
+    parser.parse_brands()
+    parser.parse_products()
     parser.parse_description_fashion_season_and_tags()
     parser.compare_produts_variants()
     parser.parse_photos()

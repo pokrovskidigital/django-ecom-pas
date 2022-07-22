@@ -26,9 +26,11 @@ def create_leftover(offer):
     try:
         size_ser = SizeCreateSerializer(data={"title": size})
         size_ser.is_valid(raise_exception=True)
-        size = size_ser.create(size_ser.validated_data).pk
+        size = size_ser.create(size_ser.validated_data)[0].pk
+        leftovers_ser = LeftoverCreateSerializer(data={'parent_size': size, "count": count})
     except:
-        pass
+        leftovers_ser = LeftoverCreateSerializer(data={"count": count})
+
     leftovers_ser = LeftoverCreateSerializer(data={'parent_size': size, "count": count})
     leftovers_ser.is_valid(raise_exception=True)
     return leftovers_ser.save()
@@ -37,7 +39,7 @@ def create_leftover(offer):
 def parse_offers(sku_list):
     data_offers = []
     data = []
-    with open("starterkit/api/v1/products/Service/offers0_1.xml", 'r', encoding="utf-8") as f:
+    with open("api/v1/products/Service/offers0_1.xml", 'r', encoding="utf-8") as f:
         a = f.read()
         parsed_xml = xmltodict.parse(a, encoding="utf-8")
         count = 0
