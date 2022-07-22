@@ -305,4 +305,17 @@ class Compilation(models.Model):
         return self.title + ' ' + self.sex.title
 
 
+class Baner(models.Model):
+    title = models.CharField(max_length=200, verbose_name="title")
+    subtitle = models.CharField(max_length=200, verbose_name="subtitle")
+    image = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True)
+    text = models.TextField(max_length=1000, verbose_name="text", default='-')
+    link = models.URLField(max_length=200, default='-')
+    button_text = models.CharField(max_length=200, default='-')
+    sort = models.IntegerField(default=0)
+    category_set = models.ManyToManyField('Category', null=True, blank=True, related_name="Baner")
+    compilation_set = models.ManyToManyField('Compilation', null=True, blank=True, related_name="Baner")
+    brand_set = models.ManyToManyField('Brand', null=True, blank=True, related_name="Baner")
 
+    def __str__(self):
+        return self.title + ' ' + self.subtitle

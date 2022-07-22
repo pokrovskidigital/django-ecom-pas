@@ -276,3 +276,9 @@ class CompilationsBlockViewSerializer(ModelSerializer):
     class Meta:
         model = Compilation
         fields = "__all__"
+
+
+class BannerSerializator(ModelSerializer):
+    class Meta:
+        model = Baner
+        fields = '__all__'

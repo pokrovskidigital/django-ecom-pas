@@ -62,7 +62,7 @@ class MenuViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        exlude = ('sex',)
+        exсlude = ('sex',)
 
 
 class MainPageViewSerializer(serializers.ModelSerializer):
