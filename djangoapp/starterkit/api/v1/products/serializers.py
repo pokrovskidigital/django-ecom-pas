@@ -167,15 +167,15 @@ class LeftoverViewSerializer(ModelSerializer):
 
 
 class CategoriesViewSerializer(ModelSerializer):
-    parent_data = SerializerMethodField()
+    parent = SerializerMethodField()
 
     sex_slug = serializers.SlugField(read_only=True, source="sex.slug")
 
     class Meta:
         model = Category
-        fields = ('title', 'slug', 'pk', 'sex_slug', 'parent_data')
+        fields = ('title', 'slug', 'pk', 'sex_slug', 'parent')
 
-    def get_parent_data(self, obj):
+    def get_parent(self, obj):
         if obj.parent is not None:
             print(obj.parent)
             return CategoriesViewSerializer(obj.parent).data
@@ -251,7 +251,7 @@ class ProductBlockViewSerializer(ModelSerializer):
 
 
 class ProductViewSerializer(ModelSerializer):
-    category = CategorySerializer()
+    category = CategoriesViewSerializer()
     brand = BrandListViewSerializer()
     image = ImageViewSerializer(many=True)
     leftovers = LeftoverViewSerializer(many=True)
