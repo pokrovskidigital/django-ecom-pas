@@ -62,8 +62,7 @@ class MenuViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        exсlude = ('sex',)
-
+        fields= '__all__'
 
 class MainPageViewSerializer(serializers.ModelSerializer):
     sex = SexSerializer()
