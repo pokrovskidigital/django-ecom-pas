@@ -1,5 +1,6 @@
 from django.db.models import Q
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 from .models import *
 from drf_writable_nested.serializers import WritableNestedModelSerializer
@@ -166,13 +167,19 @@ class LeftoverViewSerializer(ModelSerializer):
 
 
 class CategoriesViewSerializer(ModelSerializer):
-    parent = ParentCategorySerializer()
+    parent = SerializerMethodField()
 
     sex_slug = serializers.SlugField(read_only=True, source="sex.slug")
 
     class Meta:
         model = Category
         fields = ('title', 'slug', 'pk', 'sex_slug', 'parent')
+
+    def get_parent(self, obj):
+        if obj.parent is not None:
+            return CategoriesViewSerializer(obj.parent).data
+        else:
+            return None
 
 
 class CategoriesMenuSerializer(ModelSerializer):
