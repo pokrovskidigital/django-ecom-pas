@@ -11,10 +11,10 @@ from rest_framework.pagination import PageNumberPagination
 from django_filters import rest_framework as filters
 from rest_framework.response import Response
 
-from .models import Product, Category, Compilation, Brand
+from .models import Product, Category, Compilation, Brand, Baner
 from .serializers import ProductsViewSerializer, CategoriesViewSerializer, ProductViewSerializer, \
     CompilationsViewSerializer, BrandSerializer, BrandListViewSerializer, BrandViewSerializer, CategorySearchSerializer, \
-    ProductsSearchSerializer, BrandSearchSerializer
+    ProductsSearchSerializer, BrandSearchSerializer, BannerSerializer
 from rest_framework.permissions import AllowAny
 import rest_framework.filters as f
 from .services import ProductFilterSet, ProductSearchFilterSet
@@ -73,6 +73,30 @@ class ProductsListApiView(ListAPIView):
     filter_backends = (filters.DjangoFilterBackend, f.SearchFilter)
     filterset_class = ProductFilterSet
     search_fields = ['@title', '@brand__title', '@color__title', '@description', ]
+
+    def list(self, request, *args, **kwargs):
+        data = {
+            'products': [],
+            'banners': []
+        }
+        queryset = self.filter_queryset(self.get_queryset())
+        banner_data = []
+        if 'category' in request.query_params.keys():
+            banners_query = Baner.objects.filter(category_set__exact=request.query_params['category'])
+            banner_data =  BannerSerializer(banners_query, many=True).data
+        page = self.paginate_queryset(queryset)
+
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            data['products'] = serializer.data
+            data['banners'] = banner_data
+            return Response(data)
+            # return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        data['products'] = serializer.data
+        data['banners'] = banner_data
+        return Response(data)
 
     def get_queryset(self):
         print(self.request.query_params)

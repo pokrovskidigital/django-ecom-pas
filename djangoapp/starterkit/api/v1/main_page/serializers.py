@@ -62,7 +62,8 @@ class MenuViewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        fields= '__all__'
+        fields = '__all__'
+
 
 class MainPageViewSerializer(serializers.ModelSerializer):
     sex = SexSerializer()
