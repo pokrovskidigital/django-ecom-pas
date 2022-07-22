@@ -17,6 +17,8 @@ class Column(models.Model):
     heading = models.CharField(max_length=200, default='-')
     rows = models.ManyToManyField("Row", related_name='column')
     button_label = models.CharField(max_length=200, default='-')
+    button_path = models.CharField(max_length=200, default='-')
+
     sort_id = models.PositiveIntegerField(default=0)
 
 
