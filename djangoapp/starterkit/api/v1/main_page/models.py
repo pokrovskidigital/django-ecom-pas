@@ -104,9 +104,9 @@ class ProductBlock(models.Model):
     heading = models.CharField(max_length=200, default='-')
     image = models.FileField(upload_to="media/main_page/img/", blank=True, null=True)
     subheading = models.CharField(max_length=200, default='-')
-    description = models.TextField(default='', max_length=1000)
-    link = models.URLField(max_length=200, default='-')
-    link_text = models.CharField(max_length=200, default='-')
+    description = models.TextField(blank=True, null=True, max_length=1000)
+    link = models.URLField(max_length=200, blank=True, null=True,)
+    link_text = models.CharField(max_length=200, blank=True, null=True,)
     my_order = models.PositiveIntegerField(
         default=0,
         blank=False,

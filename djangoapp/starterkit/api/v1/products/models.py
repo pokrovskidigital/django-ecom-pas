@@ -216,7 +216,8 @@ class Product(models.Model):
         verbose_name='Update Time'
     )
     detailed_description = models.TextField(
-        default='',
+        blank=True,
+        null=True,
         max_length=2000
     )
     weight = models.CharField(
