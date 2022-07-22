@@ -36,7 +36,7 @@ class Menu(models.Model):
 
 
 class PromoBanner(models.Model):
-    image = models.ForeignKey(Image, on_delete=models.CASCADE, blank=True, null=True)
+    image = models.FileField('media/img/', null=True,max_length=200)
     heading = models.CharField(max_length=200, default='-')
     caption = models.CharField(max_length=200, default='-')
     button_label = models.CharField(max_length=200, default='-')
