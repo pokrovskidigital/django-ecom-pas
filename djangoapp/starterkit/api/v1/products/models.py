@@ -320,10 +320,10 @@ class Compilation(models.Model):
 class Baner(models.Model):
     title = models.CharField(max_length=200, verbose_name="title")
     subtitle = models.CharField(max_length=200, verbose_name="subtitle")
-    image = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True)
-    text = models.TextField(max_length=1000, verbose_name="text", default='-')
+    image = models.FileField('media/img/', null=True, blank=True)
+    text = models.TextField(max_length=1000, verbose_name="text", null=True, blank=True,)
     link = models.URLField(max_length=200, default='-')
-    button_text = models.CharField(max_length=200, default='-')
+    button_text = models.CharField(max_length=200, default='Подробнее')
     my_order = models.PositiveIntegerField(
         default=0,
         blank=False,

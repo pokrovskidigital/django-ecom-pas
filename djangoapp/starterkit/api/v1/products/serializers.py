@@ -266,7 +266,7 @@ class ProductViewSerializer(ModelSerializer):
         fields = (
             'id', 'slug', 'title', 'price', 'brand',
             'image', 'leftovers', 'color', 'sex', 'category',
-            'variants', 'sku', 'description', 'similar_products')
+            'variants', 'sku', 'description', 'similar_products','detailed_description')
 
 
 class CompilationsViewSerializer(ModelSerializer):
