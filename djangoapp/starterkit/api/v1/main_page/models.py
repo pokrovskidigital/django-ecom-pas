@@ -9,9 +9,18 @@ class Row(models.Model):
     path = models.CharField(max_length=200, default='-')
     category = TreeForeignKey(Category, blank=True, on_delete=models.CASCADE, null=True, related_name='row')
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.CASCADE, related_name='row')
-    sort_id = models.PositiveIntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ['my_order']
+
     def __str__(self):
         return self.heading
+
 
 class Column(models.Model):
     heading = models.CharField(max_length=200, default='-')
@@ -19,7 +28,14 @@ class Column(models.Model):
     button_label = models.CharField(max_length=200, default='-')
     button_path = models.CharField(max_length=200, default='-')
 
-    sort_id = models.PositiveIntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ['my_order']
 
 
 class Menu(models.Model):
@@ -29,20 +45,29 @@ class Menu(models.Model):
     columns = models.ManyToManyField('Column', blank=True, null=True, related_name='main_page')
     promo = models.ForeignKey("PromoBanner", on_delete=models.CASCADE, blank=True, null=True)
     sex = models.ForeignKey(Sex, on_delete=models.CASCADE, blank=True, null=True)
-    sort_id = models.PositiveIntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ['my_order']
 
     def sex_slug(self):
         return self.sex.slug
 
 
 class PromoBanner(models.Model):
-    image = models.FileField('media/img/', null=True,max_length=200)
+    image = models.FileField('media/img/', null=True, max_length=200)
     heading = models.CharField(max_length=200, default='-')
     caption = models.CharField(max_length=200, default='-')
     button_label = models.CharField(max_length=200, default='-')
     path = models.CharField(max_length=200, default='-')
+
     def __str__(self):
         return self.heading
+
 
 class Slider(models.Model):
     heading = models.CharField(max_length=200, default='-')
@@ -59,7 +84,14 @@ class Slide(models.Model):
     link = models.URLField(max_length=200, default='-')
     link_text = models.CharField(max_length=200, default='-')
     description = models.TextField(default='', max_length=1000)
-    sort_id = models.PositiveIntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ['my_order']
 
     def __str__(self):
         return self.heading
@@ -75,9 +107,16 @@ class ProductBlock(models.Model):
     description = models.TextField(default='', max_length=1000)
     link = models.URLField(max_length=200, default='-')
     link_text = models.CharField(max_length=200, default='-')
-    sort_id = models.PositiveIntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
     block_type = models.CharField(choices=BLOCK_TYPE, max_length=200, default=BLOCK_TYPE[1])
     products = models.ManyToManyField(Product, blank=True)
+
+    class Meta:
+        ordering = ['my_order']
 
     def __str__(self):
         return self.heading
@@ -87,9 +126,18 @@ class MobileShopping(models.Model):
     heading = models.CharField(max_length=200, default='-')
     image = models.FileField(upload_to="media/main_page/img/", blank=True, null=True)
     link = models.URLField(max_length=200, default='-')
-    sort_id = models.PositiveIntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ['my_order']
+
     def __str__(self):
         return self.heading
+
 
 class MainPage(models.Model):
     compilations = models.ManyToManyField(Compilation, related_name='MainMenu')

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'django.contrib.postgres',
     "corsheaders",
+    'adminsortable2',
     'easy_select2',
     'api.v1.products',
     'api.v1.main_page',

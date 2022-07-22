@@ -30,12 +30,15 @@ class Category(MPTTModel):
     title = models.CharField(max_length=200, verbose_name="title")
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='children',
                             db_index=True, verbose_name='Родительская категория')
-    sort = models.IntegerField(default=0)
     slug = models.SlugField(max_length=250, unique=False, db_index=True, verbose_name="slug", default="-")
     id_1c = models.CharField(max_length=200, unique=False, null=True, blank=True)
     image = models.ForeignKey('Image', on_delete=models.PROTECT, null=True, blank=True, )
     sex = models.ForeignKey('Sex', on_delete=models.PROTECT, null=True, blank=True, related_name='sex')
-    sort = models.IntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
     description = models.TextField(default='', max_length=1000)
 
     class MPTTMeta:
@@ -43,6 +46,7 @@ class Category(MPTTModel):
 
     class META:
         verbose_name_plural = "Categories"
+        ordering = ['my_order']
 
     def __str__(self):
         return self.title + ' ' + self.sex.title
@@ -271,7 +275,14 @@ class Labels(models.Model):
     title = models.CharField(max_length=200, verbose_name="title")
     slug = models.SlugField(max_length=250, unique=True, db_index=True, verbose_name="slug", default="-")
     color = models.ForeignKey('Color', on_delete=models.PROTECT, null=True, blank=True)
-    sort = models.IntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
+
+    class Meta:
+        ordering = ['my_order']
 
     def __str__(self):
         return self.title
@@ -312,10 +323,17 @@ class Baner(models.Model):
     text = models.TextField(max_length=1000, verbose_name="text", default='-')
     link = models.URLField(max_length=200, default='-')
     button_text = models.CharField(max_length=200, default='-')
-    sort = models.IntegerField(default=0)
+    my_order = models.PositiveIntegerField(
+        default=0,
+        blank=False,
+        null=False,
+    )
     category_set = models.ManyToManyField('Category', null=True, blank=True, related_name="Baner")
     compilation_set = models.ManyToManyField('Compilation', null=True, blank=True, related_name="Baner")
     brand_set = models.ManyToManyField('Brand', null=True, blank=True, related_name="Baner")
+
+    class Meta:
+        ordering = ['my_order']
 
     def __str__(self):
         return self.title + ' ' + self.subtitle

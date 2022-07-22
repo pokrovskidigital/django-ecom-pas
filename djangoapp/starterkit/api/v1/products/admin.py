@@ -1,17 +1,25 @@
 from django.contrib import admin
-from .models import Product, Category, Tag, Size, Leftover, Sex, Season, Color, Brand, Image, Compilation
+from .models import Product, Category, Tag, Size, Leftover, Sex, Season, Color, Brand, Image, Compilation, Baner
 
 from mptt.admin import MPTTModelAdmin
+from adminsortable2.admin import SortableAdminMixin
 
 
 # Register your models here.
-class CompilationsAdmin(admin.ModelAdmin):
+class CompilationsAdmin(SortableAdminMixin, admin.ModelAdmin, ):
     list_display = ['title', 'pk', 'sex']
-    ordering = ['pk']
+    ordering = ['my_order']
     filter_horizontal = ("products", 'extra_images',)
 
 
 admin.site.register(Compilation, CompilationsAdmin)
+
+
+class BannerAdmin(SortableAdminMixin, admin.ModelAdmin, ):
+    ordering = ['my_order']
+
+
+admin.site.register(Baner, BannerAdmin)
 
 
 class SexAdmin(admin.ModelAdmin):
@@ -75,8 +83,8 @@ class ImageAdmin(admin.ModelAdmin):
 admin.site.register(Image, ImageAdmin)
 
 
-class CategoryAdmin(MPTTModelAdmin):
-    pass
+class CategoryAdmin(SortableAdminMixin, MPTTModelAdmin):
+    ordering = ['my_order']
 
 
 admin.site.register(Category, CategoryAdmin)

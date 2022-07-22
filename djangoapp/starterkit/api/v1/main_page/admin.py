@@ -1,44 +1,42 @@
 from django.contrib import admin
 from .models import Menu, Column, PromoBanner, Row, Slider, Slide, MainPage, ProductBlock, MobileShopping
 from easy_select2 import select2_modelform
+from adminsortable2.admin import SortableAdminMixin
 
 RowForm = select2_modelform(Row, attrs={'width': '250px'})
 
 
 # Register your models here.
-class MenuAdmin(admin.ModelAdmin):
+class MenuAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ['label', 'sex_slug', 'sort_id']
-    list_editable = ['sort_id']
-    ordering = ['pk']
+    ordering = ['my_order']
     list_filter = ['sex']
 
 
 admin.site.register(Menu, MenuAdmin)
 
 
-class ColumnAdmin(admin.ModelAdmin):
+class ColumnAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ['heading', 'sort_id', 'pk']
-    list_editable = ['sort_id']
-    ordering = ['pk']
+    ordering = ['my_order']
     filter_horizontal = ("rows",)
 
 
 admin.site.register(Column, ColumnAdmin)
 
 
-class ProductBlockAdmin(admin.ModelAdmin):
+class ProductBlockAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ['heading', 'pk']
-    ordering = ['pk']
+    ordering = ['my_order']
     filter_horizontal = ("products",)
 
 
 admin.site.register(ProductBlock, ProductBlockAdmin)
 
 
-class MobileShoppingAdmin(admin.ModelAdmin):
+class MobileShoppingAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ['heading', 'sort_id', 'pk']
-    list_editable = ['sort_id']
-    ordering = ['pk']
+    ordering = ['my_order']
 
 
 admin.site.register(MobileShopping, MobileShoppingAdmin)
@@ -69,7 +67,7 @@ class SliderAdmin(admin.ModelAdmin):
 admin.site.register(Slider, SliderAdmin)
 
 
-class SlideAdmin(admin.ModelAdmin):
+class SlideAdmin(SortableAdminMixin, admin.ModelAdmin):
     list_display = ['heading', 'pk']
     ordering = ['pk']
 
