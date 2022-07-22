@@ -6,7 +6,7 @@ from adminsortable2.admin import SortableAdminMixin
 
 
 # Register your models here.
-class CompilationsAdmin(SortableAdminMixin, admin.ModelAdmin, ):
+class CompilationsAdmin( admin.ModelAdmin, ):
     list_display = ['title', 'pk', 'sex']
     filter_horizontal = ("products", 'extra_images',)
 
