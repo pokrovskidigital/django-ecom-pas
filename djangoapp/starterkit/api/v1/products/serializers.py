@@ -180,6 +180,8 @@ class CategoriesViewSerializer(ModelSerializer):
             print(obj.parent)
             return CategoriesViewSerializer(obj.parent).data
         else:
+            print('none')
+
             return None
 
 
