@@ -16,7 +16,7 @@ admin.site.register(Compilation, CompilationsAdmin)
 
 class BannerAdmin(SortableAdminMixin, admin.ModelAdmin, ):
     ordering = ['my_order']
-
+    filter_horizontal = ('category_set', 'compilation_set', 'brand_set')
 
 admin.site.register(Baner, BannerAdmin)
 
