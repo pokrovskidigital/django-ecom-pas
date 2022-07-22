@@ -167,15 +167,15 @@ class LeftoverViewSerializer(ModelSerializer):
 
 
 class CategoriesViewSerializer(ModelSerializer):
-    parent = SerializerMethodField()
+    parent_data = SerializerMethodField()
 
     sex_slug = serializers.SlugField(read_only=True, source="sex.slug")
 
     class Meta:
         model = Category
-        fields = ('title', 'slug', 'pk', 'sex_slug', 'parent')
+        fields = ('title', 'slug', 'pk', 'sex_slug', 'parent_data')
 
-    def get_parent(self, obj):
+    def get_parent_data(self, obj):
         if obj.parent is not None:
             print(obj.parent)
             return CategoriesViewSerializer(obj.parent).data
