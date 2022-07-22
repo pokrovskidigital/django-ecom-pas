@@ -177,6 +177,7 @@ class CategoriesViewSerializer(ModelSerializer):
 
     def get_parent(self, obj):
         if obj.parent is not None:
+            print(obj.parent)
             return CategoriesViewSerializer(obj.parent).data
         else:
             return None
